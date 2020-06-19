@@ -1,0 +1,98 @@
+<h2>New Feature</h2>
+<hr>
+
+{{#each erros }}
+<div class="alert-danger">{{texto}}</div>
+{{else}}
+{{/each}}
+
+
+<div class="container">
+    <form action="/feature/new" method="post">
+
+        <div class="row">
+            <div class="col-25">
+                <label for="nameProject">Project</label>
+            </div>
+            <div class="col-75">
+                <input type="hidden" id="projectID" name="projectID" value="{{project.ID}}">
+                <input type="text" id="nameProject" name="nameProject" disabled value="{{project.NameProject}}">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="titleFeature">Title</label>
+            </div>
+            <div class="col-75">
+                <input type="text" id="titleFeature" name="titleFeature" value="">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="featureStatus">Status</label>
+            </div>
+            <div class="col-75">
+                <select id="featureStatus" name="featureStatus"></select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="estimatedTime">Estimated Time (Hours)</label>
+            </div>
+            <div class="col-75">
+                <input type="text" id="estimatedTime" name="estimatedTime" value=""
+                    placeholder="Estimated time in hours...">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="deliveryDate">Delivery Date</label>
+            </div>
+            <div class="col-75">
+                <input type="date" id="deliveryDate" name="deliveryDate" value="">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="description">Description</label>
+            </div>
+            <div class="col-75">
+                <textarea id="description" name="description" placeholder="Describe new feature..."
+                    style="height:200px"></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <input type="submit" value="Save">
+        </div>
+    </form>
+
+
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        fetchAsyncAwait();
+    });
+
+    async function fetchAsyncAwait() {
+        const res = await fetch("http://localhost:8787/api/getfeatureStatus");
+        const json = await res.json();
+
+        let featureStatus = document.getElementById("featureStatus");
+
+        for (let i = 0; i < json.length; i++) {
+            let option = document.createElement("option");
+            option.value = json[i].ID;
+            option.innerText = json[i].NameFeatureStatus;
+            featureStatus.appendChild(option);
+        }
+    }
+
+
+</script>

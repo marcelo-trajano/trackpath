@@ -1,0 +1,106 @@
+<h2>New Features</h2>
+<hr>
+
+{{#each erros }}
+<div class="alert-danger">{{texto}}</div>
+{{else}}
+{{/each}}
+
+
+<div class="container">
+    <form action="" method="post">
+
+        <div class="row">
+            <div class="col-25">
+                <label for="ProjectCombo">Project</label>
+            </div>
+            <div class="col-75">
+                <select id="ProjectCombo" name="ProjectCombo"></select>
+            </div>
+        </div>
+
+        <div class="row w3-margin-top">
+            <input type="submit" class="w3-grey" value="Search">
+        </div>
+    </form>
+</div>
+<div id="containerList"></div>
+<script>
+
+    $(document).ready(function () {
+        fetchAsyncAwait();
+    });
+
+    async function fetchAsyncAwait() {
+        const res = await fetch("http://localhost:8787/api/getActiveProjects");
+        const json = await res.json();
+
+        let ProjectCombo = document.getElementById("ProjectCombo");
+        let option = document.createElement("option");
+        option.value = 0;
+        option.innerText = "Select a project...";
+        ProjectCombo.appendChild(option);
+
+        for (let i = 0; i < json.length; i++) {
+            let option = document.createElement("option");
+            option.value = json[i].ID;
+            option.innerText = json[i].NameProject;
+            ProjectCombo.appendChild(option);
+        }
+    }
+
+    $(document).ready(function () {
+        $("#ProjectCombo").change(function () {
+            let id = $(this).children("option:selected").val();
+            getFeaturesByProject(id)
+        });
+    });
+
+    async function getFeaturesByProject(id) {
+
+        $("#containerList").empty()
+
+        const res = await fetch(`http://localhost:8787/feature/getFeaturesByProject/${id}`);
+        const json = await res.json();
+
+
+        let containerList = document.getElementById("containerList");
+
+        let i;
+        for (i = 0; i < json.length; i++) {
+            let button = document.createElement("button");
+            button.setAttribute("class", "accordion")
+            button.innerText = json[i].TitleFeature;
+            containerList.appendChild(button)
+
+            let p = document.createElement("p");
+            p.innerText = json[i].DescriptionFeature;
+            let div = document.createElement("div");
+            div.appendChild(p)
+            div.setAttribute("class", "panel")
+
+            containerList.appendChild(div)
+        }
+
+
+        var acc = document.getElementsByClassName("accordion");
+
+        var j;
+        for (j = 0; j < acc.length; j++) {
+            acc[j].addEventListener("click", function () {
+                this.classList.toggle("active");
+                var panel = this.nextElementSibling;
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                }
+            });
+        }
+    }
+
+
+
+
+
+</script>

@@ -1,0 +1,88 @@
+<h2>New Project</h2>
+<hr>
+
+
+{{#each erros }}
+<div class="alert-danger">{{texto}}</div>
+{{else}}
+{{/each}}
+
+
+<div class="container">
+    <form action="/project/new" method="post">
+        <div class="row">
+            <div class="col-25">
+                <label for="pName">Project Name</label>
+            </div>
+            <div class="col-75">
+                <input type="hidden" id="ID" name="ID" value="{{ID}}">
+                <input type="text" id="pName" name="pName" value="{{NameProject}}">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="startDate">Start Date</label>
+            </div>
+            <div class="col-75">
+                <input type="date" id="startDate" name="startDate" value="{{StartDate}}">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="endDate">End Date</label>
+            </div>
+            <div class="col-75">
+                <input type="date" id="endDate" name="endDate" value="{{EndDate}}">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="pPriority">Status</label>
+            </div>
+            <div class="col-75">
+                <input type="hidden" value="{{StatusID}}" id="status">
+                <select id="pPriority" name="pPriority"></select>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-25">
+                <label for="pDescription">Description</label>
+            </div>
+            <div class="col-75">
+                <textarea id="pDescription" name="pDescription" placeholder="Write something..."
+                    style="height:200px">{{DescriptionProject}}</textarea>
+            </div>
+        </div>
+        <div class="row">
+            <input type="submit" value="Save">
+        </div>
+    </form>
+
+
+</div>
+<script>
+
+    $(document).ready(function () {
+        fetchAsyncAwait();
+    });
+
+    async function fetchAsyncAwait() {
+        const res = await fetch("http://localhost:8787/api");
+        const json = await res.json();
+
+        let pPriority = document.getElementById("pPriority");
+        let status = document.getElementById("status").value;
+
+        for (let i = 0; i < json.length; i++) {
+            let option = document.createElement("option");
+            option.value = json[i].ID;
+            option.innerText = json[i].StatusName;
+            if (status == json[i].ID) {
+                option.setAttribute("selected", "");
+            }
+            pPriority.appendChild(option);
+        }
+    }
+
+
+</script>

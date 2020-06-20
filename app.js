@@ -14,6 +14,7 @@ const flash = require("connect-flash");
 const StatusProject = require(`./models/StatusProject`);
 const Project = require(`./models/Project`);
 const FeatureStatus = require(`./models/FeatureStatus`);
+const StatusProgress = require(`./models/StatusProgress`);
 const SERVER_PORT = 8787;
 
 app.use(
@@ -76,6 +77,12 @@ app.get(`/api/getActiveProjects`, (req, res) => {
 
 app.get(`/api/getFeatureStatus`, (req, res) => {
   FeatureStatus.findAll(async function (results) {
+    res.send(results);
+  });
+});
+
+app.get(`/api/getStatusProgress`, (req, res) => {
+  StatusProgress.findAll(async function (results) {
     res.send(results);
   });
 });

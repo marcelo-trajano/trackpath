@@ -1,0 +1,142 @@
+<h2>New Feature</h2>
+<hr>
+
+{{#each erros }}
+<div class="alert-danger">{{texto}}</div>
+{{else}}
+{{/each}}
+
+
+<div class="container">
+    <form action="/feature/solveIssue" method="post">
+
+        <div class="row">
+            <div class="col-25">
+                <label for="nameProject">Project</label>
+            </div>
+            <div class="col-75">
+                <input type="hidden" id="projectID" name="projectID" value="{{feature.project.ID}}">
+                <input type="text" id="nameProject" name="nameProject" disabled value="{{feature.project.NameProject}}">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="titleFeature">Title</label>
+            </div>
+            <div class="col-75">
+                <input type="hidden" id="featureID" name="featureID" value="{{feature.ID}}">
+                <input type="text" id="titleFeature" name="titleFeature" disabled value="{{feature.TitleFeature}}">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="featureStatus">Status</label>
+            </div>
+            <div class="col-75">
+                <input type="hidden" id="featureStatusID" value="{{feature.FeatureStatusID}}"> </input>
+                <select id="featureStatus" name="featureStatus"> </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="openedAtDate">Opened At</label>
+            </div>
+            <div class="col-75">
+                <input type="date" id="openedAtDate" name="openedAtDate" disabled value="{{feature.CreatedAt}}">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="estimatedTime">Estimated Time (Hours)</label>
+            </div>
+            <div class="col-75">
+                <input type="text" id="estimatedTime" name="estimatedTime" disabled value="{{feature.EstimatedTime}}h">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="Progress">Progress</label>
+            </div>
+            <div class="col-75">
+                <input type="hidden" id="StatusProgressID" value="{{feature.StatusProgressID}}"> </input>
+                <select id="Progress" name="Progress"></select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="deliveryDate">Delivery Date</label>
+            </div>
+            <div class="col-75">
+                <input type="date" id="deliveryDate" name="deliveryDate" disabled value="{{feature.DeliveryDate}}">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="description">Notes</label>
+            </div>
+            <div class="col-75">
+                <textarea id="description" name="description" placeholder="Describe new feature..."
+                    style="height:200px">{{feature.DescriptionFeature}}</textarea>
+            </div>
+        </div>
+        <div class="row">
+            <input type="submit" value="Save">
+        </div>
+    </form>
+
+
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        getfeatureStatus();
+        getStatusProgress()
+    });
+
+    async function getfeatureStatus() {
+        const res = await fetch("http://localhost:8787/api/getfeatureStatus");
+        const json = await res.json();
+
+        let featureStatus = document.getElementById("featureStatus");
+        let status = document.getElementById("featureStatusID").value;
+
+        for (let i = 0; i < json.length; i++) {
+            let option = document.createElement("option");
+            option.value = json[i].ID;
+            option.innerText = json[i].NameFeatureStatus;
+            if (status == option.value) {
+                option.setAttribute("selected", "");
+            }
+            featureStatus.appendChild(option);
+        }
+    }
+
+    async function getStatusProgress() {
+        const res = await fetch("http://localhost:8787/api/getStatusProgress");
+        const json = await res.json();
+
+        let Progress = document.getElementById("Progress");
+        let status = document.getElementById("StatusProgressID").value;
+
+        for (let i = 0; i < json.length; i++) {
+            let option = document.createElement("option");
+            option.value = json[i].ID;
+            option.innerText = json[i].StatusProgress;
+            if (status == option.value) {
+                option.setAttribute("selected", "");
+            }
+            Progress.appendChild(option);
+        }
+    }
+
+
+
+</script>

@@ -38,3 +38,27 @@ CREATE TABLE `projects` (
   KEY `StatusID` (`StatusID`),
   CONSTRAINT `projects_ibfk_1` FOREIGN KEY (`StatusID`) REFERENCES `statusproject` (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+
+CREATE TABLE `StatusProgress` (
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `StatusProgressValue` int NOT NULL,
+  `StatusProgress` varchar(50) NOT NULL,
+  PRIMARY KEY (`ID`)
+)
+
+insert into StatusProgress (StatusProgressValue,StatusProgress) values (0, "Not Started");
+insert into StatusProgress (StatusProgressValue,StatusProgress) values (25, "25%");
+insert into StatusProgress (StatusProgressValue,StatusProgress) values (50, "50%");
+insert into StatusProgress (StatusProgressValue,StatusProgress) values (75, "75%");
+insert into StatusProgress (StatusProgressValue,StatusProgress) values (100, "Done") ;
+
+ALTER TABLE features
+ADD StatusProgressID int
+
+ALTER TABLE features
+ADD FOREIGN KEY (StatusProgressID) REFERENCES StatusProgress(ID);
+
+ALTER TABLE features
+MODIFY DescriptionFeature varchar(3000) NULL;

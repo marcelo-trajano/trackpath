@@ -3,11 +3,9 @@ const HOST = "localhost";
 const USER = "root";
 const PASSWORD = "123456";
 const DATABASE = "trackpath";
-const STATUS = {
-  OPEN: 1,
-  IN_PROGRESS: 2,
-  TO_BE_TESTED: 3,
-  CLOSED: 4,
+const StatusProgressValue = {
+  NOT_STARTED: 6,
+  DONE: 10,
 };
 
 const findAll = async function (callback) {
@@ -22,7 +20,7 @@ const findAll = async function (callback) {
     if (err) throw err;
     console.log("Connected!");
 
-    let sql = `SELECT * FROM FeatureStatus`;
+    let sql = `SELECT * FROM StatusProgress`;
 
     con.query(sql, async function (err, result) {
       if (err) throw err;
@@ -33,4 +31,4 @@ const findAll = async function (callback) {
   });
 };
 
-module.exports = { STATUS: STATUS, findAll: findAll };
+module.exports = { StatusProgressValue: StatusProgressValue, findAll: findAll };

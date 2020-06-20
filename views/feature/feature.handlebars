@@ -74,12 +74,28 @@
             containerList.appendChild(button)
 
             let p = document.createElement("p");
-            p.innerText = json[i].DescriptionFeature;
+            p.innerText = "Notes: " + json[i].DescriptionFeature;
             let div = document.createElement("div");
-            div.appendChild(p)
             div.setAttribute("class", "panel")
 
+            div.appendChild(p)
+
             containerList.appendChild(div)
+
+            let DivPanel = document.getElementsByClassName("panel")
+
+            let openFeatureLink = document.createElement("a");
+            openFeatureLink.setAttribute("href", `feature/solveIssue/${json[i].ID}`)
+
+            let openFeaturebutton = document.createElement("button");
+            openFeaturebutton.setAttribute("class", "w3-button w3-grey w3-round-medium w3-margin-bottom")
+            openFeaturebutton.innerText = "Solve Issue"
+            openFeatureLink.appendChild(openFeaturebutton)
+
+            DivPanel[i].appendChild(openFeatureLink)
+
+
+
         }
 
 

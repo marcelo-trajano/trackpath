@@ -1,3 +1,9 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 html,
 body,
 h1,
@@ -97,10 +103,6 @@ span.mr {
   margin-left: 5px;
 }
 
-* {
-  box-sizing: border-box;
-}
-
 /* Float cancel and delete buttons and add an equal width */
 .cancelbtn,
 .deletebtn {
@@ -191,35 +193,48 @@ hr {
   }
 }
 
-/* Style the buttons that are used to open and close the accordion panel */
-.accordion {
+.label-issue {
+  color: white;
+  padding: 10px;
+}
+
+.success {
+  background-color: #4caf50;
+} /* Green */
+.info {
+  background-color: #2196f3;
+} /* Blue */
+.warning {
+  background-color: #ff9800;
+} /* Orange */
+.danger {
+  background-color: #f44336;
+} /* Red */
+.other {
+  background-color: #e7e7e7;
+  color: black;
+} /* Gray */
+
+.solveItemDiv {
+  display: flex;
+  justify-content: space-between;
   background-color: rgb(228, 228, 228);
   color: #444;
   cursor: pointer;
-  padding: 18px;
   width: 100%;
-  text-align: left;
-  border: 10px;
-  outline: 10px;
   transition: 0.4s;
+  padding: 9px;
+}
+
+.solveItemDiv p {
+  margin-top: 12px;
+  margin-left: 50px;
 }
 
 /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
 .active,
-.accordion:hover {
+.solveItemDiv:hover {
   background-color: #ccc;
-}
-
-.accordion:after {
-  content: "\02795"; /* Unicode character for "plus" sign (+) */
-  font-size: 13px;
-  color: #777;
-  float: right;
-  margin-left: 5px;
-}
-
-.active:after {
-  content: "\2796"; /* Unicode character for "minus" sign (-) */
 }
 
 .panel {
@@ -229,4 +244,9 @@ hr {
   overflow: hidden;
   transition: max-height 0.2s ease-out;
   border: 10px;
+}
+
+.panel p {
+  margin-top: 10px;
+  margin-bottom: 10px;
 }

@@ -68,17 +68,35 @@
 
         let i;
         for (i = 0; i < json.length; i++) {
-            let button = document.createElement("button");
-            button.setAttribute("class", "accordion")
-            button.innerText = json[i].TitleFeature;
-            containerList.appendChild(button)
 
+            let divItem = document.createElement("div");
+            divItem.setAttribute("class", "solveItemDiv")
             let p = document.createElement("p");
-            p.innerText = "Notes: " + json[i].DescriptionFeature;
+            p.innerText = json[i].TitleFeature;
+            divItem.appendChild(p)
+            let span = document.createElement("span");
+
+            if (json[i].FeatureStatusID === 1) {
+                span.setAttribute("class", "label-issue danger")
+                span.innerText = "Open";
+            } else if (json[i].FeatureStatusID === 2) {
+                span.setAttribute("class", "label-issue warning")
+                span.innerText = "In progress";
+            } else {
+                span.setAttribute("class", "label-issue success")
+                span.innerText = "To be tested";
+            }
+
+            divItem.appendChild(span)
+
+            containerList.appendChild(divItem)
+
+            let p1 = document.createElement("p");
+            p1.innerText = "Notes: " + json[i].DescriptionFeature;
             let div = document.createElement("div");
             div.setAttribute("class", "panel")
 
-            div.appendChild(p)
+            div.appendChild(p1)
 
             containerList.appendChild(div)
 
@@ -99,7 +117,7 @@
         }
 
 
-        var acc = document.getElementsByClassName("accordion");
+        var acc = document.getElementsByClassName("solveItemDiv");
 
         var j;
         for (j = 0; j < acc.length; j++) {

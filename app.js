@@ -10,6 +10,7 @@ const path = require(`path`);
 const project = require(`./routes/project`);
 const feature = require(`./routes/feature`);
 const admin = require(`./routes/admin`);
+const bug = require(`./routes/bug`);
 const session = require("express-session");
 const flash = require("connect-flash");
 const StatusProject = require(`./models/StatusProject`);
@@ -56,6 +57,7 @@ app.use(express.static(path.join(__dirname, `public`)));
 app.use(`/project`, project);
 app.use(`/feature`, feature);
 app.use(`/admin`, admin);
+app.use(`/bug`, bug);
 
 app.get("/", function (req, res) {
   res.render(`index`);

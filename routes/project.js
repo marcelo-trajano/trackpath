@@ -98,9 +98,6 @@ router.post(`/delete`, (req, res) => {
   Project.remove(req.body.ID, function () {
     req.flash("error_msg", "Project has been deleted!");
     res.redirect(`/project`);
-  }).catch(function (error) {
-    req.flash("error_msg", error);
-    res.redirect(`/project`);
   });
 });
 

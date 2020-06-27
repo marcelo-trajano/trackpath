@@ -10,7 +10,6 @@ const create = async function (feature, callback) {
 
   connection.query(sql, function (err, result) {
     if (err) throw err;
-    //con.destroy();
     console.log(sql);
     return callback();
   });
@@ -23,7 +22,6 @@ const findFeaturesByProjects = async function (projectID, callback) {
   connection.query(sql, async function (err, result) {
     if (err) throw err;
     console.log(sql);
-    //con.destroy();
     return callback(result);
   });
 };
@@ -34,7 +32,6 @@ const findAll = async function (callback) {
   connection.query(sql, async function (err, result) {
     if (err) throw err;
     console.log(sql);
-    //con.destroy();
     return callback(result);
   });
 };
@@ -47,7 +44,6 @@ const findByPK = async function (ID, callback) {
   connection.query(sql, async function (err, result) {
     if (err) throw err;
     console.log(sql);
-    //con.destroy();
     return callback(result[0]);
   });
 };
@@ -60,7 +56,6 @@ const update = async function (ID, callback) {
   connection.query(sql, async function (err, result) {
     if (err) throw err;
     console.log(sql);
-    //con.destroy();
     return callback(result[0]);
   });
 };
@@ -73,7 +68,6 @@ const updateSolveIssue = async function (feature, callback) {
   connection.query(sql, async function (err, result) {
     if (err) throw err;
     console.log(sql);
-    //con.destroy();
     return callback(result[0]);
   });
 };

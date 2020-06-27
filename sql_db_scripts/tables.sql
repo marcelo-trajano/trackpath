@@ -62,3 +62,25 @@ ADD FOREIGN KEY (StatusProgressID) REFERENCES StatusProgress(ID);
 
 ALTER TABLE features
 MODIFY DescriptionFeature varchar(3000) NULL;
+
+CREATE TABLE `Severity` (
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `Severity` varchar(100) NOT NULL,
+  PRIMARY KEY (`ID`)
+)
+
+CREATE TABLE `Priority` (
+  `ID` int NOT NULL AUTO_INCREMENT,
+  `Priority` varchar(100) NOT NULL,
+  PRIMARY KEY (`ID`)
+)
+
+insert into Severity (Severity) values ('Critical');
+insert into Severity (Severity) values ('Major');
+insert into Severity (Severity) values ('Medium');
+insert into Severity (Severity) values ('Low');
+
+
+insert into Priority (Priority) values ('Low');
+insert into Priority (Priority) values ('Medium');
+insert into Priority (Priority) values ('High');

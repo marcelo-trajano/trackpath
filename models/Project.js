@@ -7,7 +7,6 @@ const create = async function (obj, callback) {
 
   connection.query(sql, function (err, result) {
     if (err) throw err;
-    //connection.end();
     console.log(sql);
     return callback();
   });
@@ -22,9 +21,7 @@ const update = async function (obj, callback) {
                    where ID  = ${obj.ID}`;
   connection.query(sql, function (err, result) {
     if (err) throw err;
-    //con.end();
     console.log(sql);
-    console.log(result);
     return callback();
   });
 };
@@ -33,11 +30,11 @@ const findAll = async function (callback) {
   let sql = `select p.ID as ID, p.NameProject, DATE_FORMAT(p.StartDate,'%Y-%m-%d') as StartDate , DATE_FORMAT(p.EndDate,'%Y-%m-%d') as EndDate, p.DescriptionProject, sp.ID as StatusID, sp.StatusName 
         from projects as p
         inner join statusproject as sp
-        on p.StatusID = sp.ID`;
+        on p.StatusID = sp.ID 
+        ORDER BY ID DESC`;
   connection.query(sql, async function (err, result) {
     if (err) throw err;
     console.log(sql);
-    //connection.end();
     return callback(result);
   });
 };
@@ -52,7 +49,6 @@ const findByPK = async function (id, callback) {
   connection.query(sql, async function (err, result) {
     if (err) throw err;
     console.log(sql);
-    //con.destroy();
     return callback(result[0]);
   });
 };
@@ -63,7 +59,6 @@ const remove = async function (id, callback) {
 
   connection.query(sql, async function (err, result) {
     if (err) throw err;
-    //con.destroy();
     console.log(sql);
     return callback(result[0]);
   });

@@ -1,13 +1,7 @@
 const connection = require("../db/connection");
-const STATUS = {
-  OPEN: 1,
-  IN_PROGRESS: 2,
-  TO_BE_TESTED: 3,
-  CLOSED: 4,
-};
 
 const findAll = async function (callback) {
-  let sql = `SELECT * FROM FeatureStatus`;
+  let sql = `SELECT * FROM Severity`;
 
   connection.query(sql, async function (err, result) {
     if (err) throw err;
@@ -16,4 +10,4 @@ const findAll = async function (callback) {
   });
 };
 
-module.exports = { STATUS: STATUS, findAll: findAll };
+module.exports = { findAll: findAll };

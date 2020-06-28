@@ -12,13 +12,13 @@ router.get(`/`, (req, res) => {
 
 router.get(`/getFeaturesByProject/:id`, (req, res) => {
   Feature.findFeaturesByProjects(req.params.id, function (results) {
-    let features = [];
-    results.forEach((feature) => {
-      if (feature.FeatureStatusID !== FeatureStatus.STATUS.CLOSED) {
-        features.push(feature);
-      }
-    });
-    res.send(features);
+    // let features = [];
+    // results.forEach((feature) => {
+    //   if (feature.FeatureStatusID !== FeatureStatus.STATUS.CLOSED) {
+    //     features.push(feature);
+    //   }
+    // });
+    res.send(results);
   });
 });
 

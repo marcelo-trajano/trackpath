@@ -1,0 +1,180 @@
+<h2>Bug</h2>
+<hr>
+
+{{#each erros }}
+<div class="alert-danger">{{texto}}</div>
+{{else}}
+{{/each}}
+
+
+<div class="container">
+    <form action="/bug/solveIssue" method="post">
+
+        <div class="row">
+            <div class="col-25">
+                <label for="nameProject">Project</label>
+            </div>
+            <div class="col-75">
+                <input type="hidden" id="projectID" name="projectID" value="{{bug.project.ID}}">
+                <input type="text" id="nameProject" name="nameProject" disabled value="{{bug.project.NameProject}}">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="titleFeature">Title</label>
+            </div>
+            <div class="col-75">
+                <input type="hidden" id="bugID" name="bugID" value="{{bug.ID}}">
+                <input type="text" id="titleFeature" name="titleFeature" disabled value="{{bug.Title}}">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="featureStatus">Status</label>
+            </div>
+            <div class="col-75">
+                <input type="hidden" id="featureStatusID" value="{{bug.StatusID}}"> </input>
+                <select id="featureStatus" name="featureStatus"> </select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="openedAtDate">Opened At</label>
+            </div>
+            <div class="col-75">
+                <input type="date" id="openedAtDate" name="openedAtDate" disabled value="{{bug.CreatedAt}}">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="estimatedTime">Estimated Time (Hours)</label>
+            </div>
+            <div class="col-75">
+                <input type="text" id="estimatedTime" name="estimatedTime" disabled value="{{bug.EstimatedHours}}h">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="selectSeverity">Severity</label>
+            </div>
+            <div class="col-75">
+                <input type="hidden" id="selectSeverityID" value="{{bug.SeverityID}}"> </input>
+                <select id="selectSeverity" name="selectSeverity" disabled></select>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="selectPriority">Priority</label>
+            </div>
+            <div class="col-75">
+                <input type="hidden" id="selectPriorityID" value="{{bug.PriorityID}}"> </input>
+                <select id="selectPriority" name="selectPriority" disabled></select>
+            </div>
+        </div>
+        <!--
+        <div class="row">
+            <div class="col-25">
+                <label for="Progress">Progress</label>
+            </div>
+            <div class="col-75">
+                <input type="hidden" id="StatusProgressID" value=""> </input>
+                <select id="Progress" name="Progress"></select>
+            </div>
+        </div>
+        -->
+        <div class="row">
+            <div class="col-25">
+                <label for="deliveryDate">Delivery Date</label>
+            </div>
+            <div class="col-75">
+                <input type="date" id="deliveryDate" name="deliveryDate" disabled value="{{bug.DeliveryDate}}">
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
+                <label for="Summary">Summary</label>
+            </div>
+            <div class="col-75">
+                <textarea id="Summary" name="Summary" placeholder="Describe new feature..."
+                    style="height:200px">{{bug.Summary}}</textarea>
+            </div>
+        </div>
+
+        <div class="row">
+            <input type="submit" value="Save">
+        </div>
+    </form>
+
+
+</div>
+
+<script>
+
+    $(document).ready(function () {
+        getStatus();
+        getSeverity();
+        getPriority();
+    });
+
+
+    async function getStatus() {
+        const res = await fetch("http://localhost:8787/api/getFeatureStatus");
+        const json = await res.json();
+        let featureStatus = document.getElementById("featureStatus");
+        let status = document.getElementById("featureStatusID").value;
+        for (let i = 0; i < json.length; i++) {
+            let option = document.createElement("option");
+            option.value = json[i].ID;
+            option.innerText = json[i].NameFeatureStatus;
+            if (status == option.value) {
+                option.setAttribute("selected", "");
+            }
+            featureStatus.appendChild(option);
+        }
+    }
+
+    async function getSeverity() {
+        const res = await fetch("http://localhost:8787/bug/getSeverity");
+        const json = await res.json();
+        let selectSeverity = document.getElementById("selectSeverity");
+        let status = document.getElementById("selectSeverityID").value;
+        for (let i = 0; i < json.length; i++) {
+            let option = document.createElement("option");
+            option.value = json[i].ID;
+            option.innerText = json[i].Severity;
+            if (status == option.value) {
+                option.setAttribute("selected", "");
+            }
+            selectSeverity.appendChild(option);
+        }
+    }
+
+    async function getPriority() {
+        const res = await fetch("http://localhost:8787/bug/getPriority");
+        const json = await res.json();
+        let selectPriority = document.getElementById("selectPriority");
+        let status = document.getElementById("selectPriorityID").value;
+        for (let i = 0; i < json.length; i++) {
+            let option = document.createElement("option");
+            option.value = json[i].ID;
+            option.innerText = json[i].Priority;
+            if (status == option.value) {
+                option.setAttribute("selected", "");
+            }
+            selectPriority.appendChild(option);
+        }
+    }
+
+
+
+
+
+
+</script>

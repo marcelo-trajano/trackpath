@@ -31,6 +31,28 @@ router.post(`/add`, (req, res) => {
   });
 });
 
+router.get(`/`, (req, res) => {
+  res.render(`bug/bugs`);
+});
+
+router.get(`/solveIssue/:bugID`, (req, res) => {
+  Bug.findByPK(req.params.bugID, (bug) => {
+    Project.findByPK(bug.ProjectID, (project) => {
+      bug.project = project;
+      res.render(`bug/solveIssue`, { bug: bug });
+    });
+  });
+});
+
+router.post(`/solveIssue`, (req, res) => {
+  let bug = req.body;
+
+  Bug.updateSolveIssue(bug, (result) => {
+    req.flash("success_msg", "Bug successfully updated!");
+    res.redirect(`/bug`);
+  });
+});
+
 router.get(`/getSeverity`, (req, res) => {
   Severity.findAll((results) => {
     res.send(results);
@@ -39,6 +61,12 @@ router.get(`/getSeverity`, (req, res) => {
 
 router.get(`/getPriority`, (req, res) => {
   Priority.findAll((results) => {
+    res.send(results);
+  });
+});
+
+router.get(`/getBugsByProject/:id`, (req, res) => {
+  Bug.getBugsByProject(req.params.id, (results) => {
     res.send(results);
   });
 });

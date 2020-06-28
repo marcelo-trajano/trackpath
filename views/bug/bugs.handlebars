@@ -1,4 +1,4 @@
-<h2>New Features</h2>
+<h2>Bugs</h2>
 <hr>
 
 {{#each erros }}
@@ -52,15 +52,15 @@
     $(document).ready(function () {
         $("#ProjectCombo").change(function () {
             let id = $(this).children("option:selected").val();
-            getFeaturesByProject(id)
+            getBugsByProject(id)
         });
     });
 
-    async function getFeaturesByProject(id) {
+    async function getBugsByProject(id) {
 
         $("#containerList").empty()
 
-        const res = await fetch(`http://localhost:8787/feature/getFeaturesByProject/${id}`);
+        const res = await fetch(`http://localhost:8787/bug/getBugsByProject/${id}`);
         const json = await res.json();
 
 
@@ -72,14 +72,14 @@
             let divItem = document.createElement("div");
             divItem.setAttribute("class", "solveItemDiv")
             let p = document.createElement("p");
-            p.innerText = json[i].TitleFeature;
+            p.innerText = json[i].Title;
             divItem.appendChild(p)
             let span = document.createElement("span");
 
-            if (json[i].FeatureStatusID === 1) {
+            if (json[i].StatusID === 1) {
                 span.setAttribute("class", "label-issue danger")
                 span.innerText = "Open";
-            } else if (json[i].FeatureStatusID === 2) {
+            } else if (json[i].StatusID === 2) {
                 span.setAttribute("class", "label-issue warning")
                 span.innerText = "In progress";
             } else if (json[i].FeatureStatusID === 3) {
@@ -95,7 +95,7 @@
             containerList.appendChild(divItem)
 
             let p1 = document.createElement("p");
-            p1.innerText = "Notes: " + json[i].DescriptionFeature;
+            p1.innerText = "Notes: " + json[i].Summary;
             let div = document.createElement("div");
             div.setAttribute("class", "panel")
 
@@ -106,7 +106,7 @@
             let DivPanel = document.getElementsByClassName("panel")
 
             let openFeatureLink = document.createElement("a");
-            openFeatureLink.setAttribute("href", `feature/solveIssue/${json[i].ID}`)
+            openFeatureLink.setAttribute("href", `bug/solveIssue/${json[i].ID}`)
 
             let openFeaturebutton = document.createElement("button");
             openFeaturebutton.setAttribute("class", "w3-button w3-grey w3-round-medium w3-margin-bottom")

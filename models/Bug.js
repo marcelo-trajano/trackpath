@@ -14,6 +14,29 @@ const create = async function (bug, callback) {
   });
 };
 
+const updateSolveIssue = async function (bug, callback) {
+  let sql = `update bugs as b
+             SET  b.Summary = "${bug.Summary}", b.StatusID = "${bug.featureStatus}" where b.ID=${bug.bugID}`;
+
+  connection.query(sql, function (err, result) {
+    if (err) throw err;
+    console.log(sql);
+    return callback(result);
+  });
+};
+
+const findByPK = async function (id, callback) {
+  let sql = `SELECT b.ID, b.Title, b.Summary, b.EstimatedHours,DATE_FORMAT(b.DeliveryDate,'%Y-%m-%d') as DeliveryDate, DATE_FORMAT(b.CreatedAt,'%Y-%m-%d') as CreatedAt,b.ProjectID,b.StatusID,b.SeverityID,b.PriorityID
+  FROM bugs as b
+  where b.ID =${id}`;
+
+  connection.query(sql, function (err, result) {
+    if (err) throw err;
+    console.log(sql);
+    return callback(result[0]);
+  });
+};
+
 const findAll = async function (callback) {
   let sql = `select * from bugs`;
 
@@ -24,7 +47,20 @@ const findAll = async function (callback) {
   });
 };
 
+const getBugsByProject = async function (id, callback) {
+  let sql = `select * from bugs where projectid=${id}`;
+
+  connection.query(sql, function (err, results) {
+    if (err) throw err;
+    console.log(sql);
+    return callback(results);
+  });
+};
+
 module.exports = {
   create: create,
   findAll: findAll,
+  getBugsByProject: getBugsByProject,
+  findByPK: findByPK,
+  updateSolveIssue: updateSolveIssue,
 };

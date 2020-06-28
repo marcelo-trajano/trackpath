@@ -3,17 +3,31 @@ const HOST = "localhost";
 const USER = "root";
 const PASSWORD = "123456";
 const DATABASE = "trackpath";
+let cachedDbPool;
 
-const connection = mysql.createConnection({
-  host: HOST,
-  user: USER,
-  password: PASSWORD,
-  database: DATABASE,
-});
+// const connection = mysql.createConnection({
+//   host: HOST,
+//   user: USER,
+//   password: PASSWORD,
+//   database: DATABASE,
+// });
 
-connection.connect(async function (err) {
-  if (err) throw err;
-  console.log("Connected!");
-});
+// connection.connect(async function (err) {
+//   if (err) throw err;
+//   console.log("Connected!");
+// });
 
-module.exports = connection;
+function cachedPool() {
+  if (!cachedDbPool) {
+    cachedDbPool = mysql.createPool({
+      connectionLimit: 1,
+      host: HOST,
+      user: USER,
+      password: PASSWORD,
+      database: DATABASE,
+    });
+  }
+  return cachedDbPool;
+}
+
+module.exports = cachedPool();

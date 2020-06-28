@@ -17,14 +17,14 @@ const StatusProject = require(`./models/StatusProject`);
 const Project = require(`./models/Project`);
 const FeatureStatus = require(`./models/FeatureStatus`);
 const StatusProgress = require(`./models/StatusProgress`);
-const SERVER_PORT = 8787;
+const SERVER_PORT = process.env.PORT || 8787;
 
 app.use(
   session({ secret: "keyboardCat", resave: false, saveUninitialized: true })
 );
 app.use(flash());
 app.use(function (req, res, next) {
-  console.log("ACESSANDO MIDDLEWARE");
+  console.log("ACESSANDO MIDDLEWARE...");
 
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader(
@@ -91,6 +91,22 @@ app.get(`/api/getStatusProgress`, (req, res) => {
   });
 });
 
-app.listen(SERVER_PORT, function () {
-  console.log("SERVIDOR STARTED!");
+app.get(`/api/getStatus`, (req, res) => {
+  StatusProgress.getStatus()
+    .then(function (results) {
+      res.send(results);
+    })
+    .catch(function (err) {
+      req.flash("error_msg", "ERROR" + err);
+      res.redirect(`/project`);
+    });
+});
+
+app.get(`/api/getStatus2`, async (req, res) => {
+  let result = await StatusProgress.getStatus();
+  res.send(result);
+});
+
+app.listen(SERVER_PORT, () => {
+  console.log("Server listening on port " + SERVER_PORT);
 });

@@ -141,7 +141,7 @@
     }
 
     async function getSeverity() {
-        const res = await fetch("http://localhost:8787/bug/getSeverity");
+        const res = await fetch("http://localhost:8787/api/getSeverity");
         const json = await res.json();
         let selectSeverity = document.getElementById("selectSeverity");
         let status = document.getElementById("selectSeverityID").value;
@@ -157,7 +157,7 @@
     }
 
     async function getPriority() {
-        const res = await fetch("http://localhost:8787/bug/getPriority");
+        const res = await fetch("http://localhost:8787/api/getPriority");
         const json = await res.json();
         let selectPriority = document.getElementById("selectPriority");
         let status = document.getElementById("selectPriorityID").value;

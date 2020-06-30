@@ -3,9 +3,13 @@ const router = express.Router();
 const Project = require(`../models/Project`);
 
 router.get(`/`, (req, res) => {
-  Project.findAll(function (results) {
-    res.render("project/project", { Projects: results });
-  });
+  Project.findAll()
+    .then((result) => {
+      res.render("project/project", { Projects: result });
+    })
+    .catch((err) => {
+      req.flash("error_msg", "ERROR" + err);
+    });
 });
 
 router.get(`/new`, (req, res) => {

@@ -5,32 +5,16 @@ const StatusProgressValue = {
   DONE: 10,
 };
 
-const findAll = async function (callback) {
-  let sql = `SELECT * FROM StatusProgress`;
-
-  connection.query(sql, async function (err, result) {
-    if (err) throw err;
-    console.log(sql);
-    return callback(result);
-  });
-};
-
-async function getStatus() {
+const findAll = () => {
   return new Promise((resolve, reject) => {
     let sql = `SELECT * FROM StatusProgress`;
-    connection.cachedPool().query(sql, (err, results) => {
-      //if (err) throw err;
-      if (err) {
-        reject(err);
-      } else {
-        resolve(results);
-      }
+    connection.query(sql, (err, results) => {
+      err ? reject(err) : resolve(results);
     });
   });
-}
+};
 
 module.exports = {
   StatusProgressValue: StatusProgressValue,
   findAll: findAll,
-  getStatus: getStatus,
 };

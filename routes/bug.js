@@ -1,8 +1,6 @@
 const express = require(`express`);
 const router = express.Router();
 const Bug = require(`../models/Bug`);
-const Severity = require(`../models/Severity`);
-const Priority = require(`../models/Priority`);
 const Project = require(`../models/Project`);
 const moment = require("moment");
 
@@ -50,24 +48,6 @@ router.post(`/solveIssue`, (req, res) => {
   Bug.updateSolveIssue(bug, (result) => {
     req.flash("success_msg", "Bug successfully updated!");
     res.redirect(`/bug`);
-  });
-});
-
-router.get(`/getSeverity`, (req, res) => {
-  Severity.findAll((results) => {
-    res.send(results);
-  });
-});
-
-router.get(`/getPriority`, (req, res) => {
-  Priority.findAll((results) => {
-    res.send(results);
-  });
-});
-
-router.get(`/getBugsByProject/:id`, (req, res) => {
-  Bug.getBugsByProject(req.params.id, (results) => {
-    res.send(results);
   });
 });
 

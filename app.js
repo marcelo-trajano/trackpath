@@ -11,9 +11,10 @@ const project = require(`./routes/project`);
 const feature = require(`./routes/feature`);
 const admin = require(`./routes/admin`);
 const bug = require(`./routes/bug`);
+const error = require(`./routes/error`);
+const api = require(`./routes/api`);
 const session = require("express-session");
 const flash = require("connect-flash");
-const StatusProject = require(`./models/StatusProject`);
 const Project = require(`./models/Project`);
 const FeatureStatus = require(`./models/FeatureStatus`);
 const StatusProgress = require(`./models/StatusProgress`);
@@ -58,54 +59,8 @@ app.use(`/project`, project);
 app.use(`/feature`, feature);
 app.use(`/admin`, admin);
 app.use(`/bug`, bug);
-
-app.get("/", function (req, res) {
-  res.render(`index`);
-});
-
-app.get("/css", function (req, res) {
-  res.render(`teste_css`);
-});
-
-app.get(`/api`, (req, res) => {
-  StatusProject.findAll(async function (results) {
-    res.send(results);
-  });
-});
-
-app.get(`/api/getActiveProjects`, (req, res) => {
-  Project.findAll(async function (results) {
-    res.send(results);
-  });
-});
-
-app.get(`/api/getFeatureStatus`, (req, res) => {
-  FeatureStatus.findAll(async function (results) {
-    res.send(results);
-  });
-});
-
-app.get(`/api/getStatusProgress`, (req, res) => {
-  StatusProgress.findAll(async function (results) {
-    res.send(results);
-  });
-});
-
-app.get(`/api/getStatus`, (req, res) => {
-  StatusProgress.getStatus()
-    .then(function (results) {
-      res.send(results);
-    })
-    .catch(function (err) {
-      req.flash("error_msg", "ERROR" + err);
-      res.redirect(`/project`);
-    });
-});
-
-app.get(`/api/getStatus2`, async (req, res) => {
-  let result = await StatusProgress.getStatus();
-  res.send(result);
-});
+app.use(`/error`, error);
+app.use(`/api`, api);
 
 app.listen(SERVER_PORT, () => {
   console.log("Server listening on port " + SERVER_PORT);

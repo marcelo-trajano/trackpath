@@ -1,23 +1,12 @@
 const mysql = require("mysql");
 const connection = require("../db/connection");
 
-const create = async function (obj, callback) {
-  let sql = `INSERT INTO StatusProject (${obj.field}) VALUES ('${obj.value}')`;
-  connection.query(sql, function (err, result) {
-    if (err) throw err;
-    console.log(sql);
-    findByPK(result.insertId, function (result) {
-      return callback(result);
+const findAll = () => {
+  return new Promise((resolve, reject) => {
+    let sql = `SELECT * FROM statusproject`;
+    connection.query(sql, (err, result) => {
+      err ? reject(err) : resolve(result);
     });
-  });
-};
-
-const findAll = async function (callback) {
-  let sql = `SELECT * FROM statusproject`;
-  connection.query(sql, async function (err, result) {
-    if (err) throw err;
-    console.log(sql);
-    return callback(result);
   });
 };
 
@@ -32,4 +21,4 @@ const findByPK = async function (id, callback) {
   });
 };
 
-module.exports = { create: create, findByPK: findByPK, findAll: findAll };
+module.exports = { findByPK: findByPK, findAll: findAll };

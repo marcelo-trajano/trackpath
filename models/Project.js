@@ -26,16 +26,17 @@ const update = async function (obj, callback) {
   });
 };
 
-const findAll = async function (callback) {
-  let sql = `select p.ID as ID, p.NameProject, DATE_FORMAT(p.StartDate,'%Y-%m-%d') as StartDate , DATE_FORMAT(p.EndDate,'%Y-%m-%d') as EndDate, p.DescriptionProject, sp.ID as StatusID, sp.StatusName 
+const findAll = () => {
+  return new Promise((resolve, reject) => {
+    let sql = `select p.ID as ID, p.NameProject, DATE_FORMAT(p.StartDate,'%Y-%m-%d') as StartDate , DATE_FORMAT(p.EndDate,'%Y-%m-%d') as EndDate, p.DescriptionProject, sp.ID as StatusID, sp.StatusName 
         from projects as p
         inner join statusproject as sp
         on p.StatusID = sp.ID 
         ORDER BY ID DESC`;
-  connection.query(sql, async function (err, result) {
-    if (err) throw err;
-    console.log(sql);
-    return callback(result);
+
+    connection.query(sql, (err, result) => {
+      err ? reject(err) : resolve(result);
+    });
   });
 };
 

@@ -67,7 +67,7 @@
     });
 
     async function fetchAsyncAwait() {
-        const res = await fetch("http://localhost:8787/api");
+        const res = await fetch("http://localhost:8787/api/getStatusProject");
         const json = await res.json();
 
         let pPriority = document.getElementById("pPriority");

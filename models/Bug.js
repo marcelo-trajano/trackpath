@@ -1,3 +1,4 @@
+const mysql = require("mysql");
 const connection = require("../db/connection");
 
 const create = async function (bug, callback) {
@@ -47,13 +48,12 @@ const findAll = async function (callback) {
   });
 };
 
-const getBugsByProject = async function (id, callback) {
-  let sql = `select * from bugs where projectid=${id}`;
-
-  connection.query(sql, function (err, results) {
-    if (err) throw err;
-    console.log(sql);
-    return callback(results);
+const getBugsByProject = (id) => {
+  return new Promise((resolve, reject) => {
+    let sql = `select * from bugs where projectid=${mysql.escape(id)}`;
+    connection.query(sql, (err, results) => {
+      err ? reject(err) : resolve(results);
+    });
   });
 };
 

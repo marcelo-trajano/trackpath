@@ -112,7 +112,7 @@
     }
 
     async function getSeverity() {
-        const res = await fetch("http://localhost:8787/bug/getSeverity");
+        const res = await fetch("http://localhost:8787/api/getSeverity");
         const json = await res.json();
         let selectSeverity = document.getElementById("selectSeverity");
         for (let i = 0; i < json.length; i++) {
@@ -124,7 +124,7 @@
     }
 
     async function getPriority() {
-        const res = await fetch("http://localhost:8787/bug/getPriority");
+        const res = await fetch("http://localhost:8787/api/getPriority");
         const json = await res.json();
         let selectPriority = document.getElementById("selectPriority");
         for (let i = 0; i < json.length; i++) {

@@ -60,7 +60,7 @@
 
         $("#containerList").empty()
 
-        const res = await fetch(`http://localhost:8787/bug/getBugsByProject/${id}`);
+        const res = await fetch(`http://localhost:8787/api/getBugsByProject/${id}`);
         const json = await res.json();
 
 

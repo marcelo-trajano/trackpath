@@ -4,11 +4,11 @@ const Project = require(`../models/Project`);
 
 router.get(`/`, (req, res) => {
   Project.findAll()
-    .then((result) => {
-      res.render("project/project", { Projects: result });
+    .then((projects) => {
+      res.render("project/project", { Projects: projects });
     })
-    .catch((err) => {
-      req.flash("error_msg", "ERROR" + err);
+    .catch((e) => {
+      req.flash("error_msg", "ERROR" + e);
     });
 });
 
@@ -17,38 +17,10 @@ router.get(`/new`, (req, res) => {
 });
 
 router.post(`/new`, (req, res) => {
-  var errors = [];
+  let errors = [];
 
-  if (
-    !req.body.pName ||
-    typeof req.body.pName === undefined ||
-    req.body.pName == null
-  ) {
-    errors.push({ texto: "Project name required!" });
-  }
-
-  if (
-    !req.body.startDate ||
-    typeof req.body.startDate === undefined ||
-    req.body.startDate == null
-  ) {
-    errors.push({ texto: "Start Date required!" });
-  }
-
-  if (
-    !req.body.endDate ||
-    typeof req.body.endDate === undefined ||
-    req.body.endDate == null
-  ) {
-    errors.push({ texto: "End Date required!" });
-  }
-
-  if (
-    !req.body.pDescription ||
-    typeof req.body.pDescription === undefined ||
-    req.body.pDescription == null
-  ) {
-    errors.push({ texto: "Description required!" });
+  if (req.body.pName === "") {
+    errors.push({ texto: "Invalid input" });
   }
 
   if (errors.length > 0) {
@@ -56,7 +28,7 @@ router.post(`/new`, (req, res) => {
       erros: errors,
     });
   } else {
-    const newProject = {
+    const project = {
       ID: req.body.ID,
       NameProject: req.body.pName,
       StartDate: req.body.startDate,
@@ -65,44 +37,58 @@ router.post(`/new`, (req, res) => {
       StatusID: req.body.pPriority,
     };
 
-    if (
-      !newProject.ID ||
-      newProject.ID === null ||
-      newProject.ID === undefined
-    ) {
-      Project.create(newProject, function () {
-        req.flash("success_msg", "Project added successfully!");
-        res.redirect(`/project`);
-      });
+    if (!project.ID || project.ID === null || project.ID === undefined) {
+      Project.create(project)
+        .then(() => {
+          req.flash("success_msg", "Project added successfully!");
+          res.redirect(`/project`);
+        })
+        .catch((e) => {
+          req.flash("error_msg", "Error: " + e);
+          res.redirect(`/project`);
+        });
     } else {
-      Project.update(newProject, function () {
-        req.flash("success_msg", "Project modified successfully!");
-        res.redirect(`/project`);
-      });
+      Project.update(project)
+        .then(() => {
+          req.flash("success_msg", "Project modified successfully!");
+          res.redirect(`/project`);
+        })
+        .catch((e) => {
+          req.flash("error_msg", "Error: " + e);
+          res.redirect(`/project`);
+        });
     }
   }
 });
 
 router.get(`/edit/:id`, (req, res) => {
-  console.log(req.params.id);
-  Project.findByPK(req.params.id, function (result) {
-    console.log(result);
-    res.render("project/newProject", {
-      ID: result.ID,
-      NameProject: result.NameProject,
-      StartDate: result.StartDate,
-      EndDate: result.EndDate,
-      StatusID: result.StatusID,
-      DescriptionProject: result.DescriptionProject,
+  Project.findByPK(req.params.id)
+    .then((project) => {
+      res.render("project/newProject", {
+        ID: project.ID,
+        NameProject: project.NameProject,
+        StartDate: project.StartDate,
+        EndDate: project.EndDate,
+        StatusID: project.StatusID,
+        DescriptionProject: project.DescriptionProject,
+      });
+    })
+    .catch((e) => {
+      req.flash("error_msg", "Error: " + e);
+      res.redirect(`/project`);
     });
-  });
 });
 
 router.post(`/delete`, (req, res) => {
-  Project.remove(req.body.ID, function () {
-    req.flash("error_msg", "Project has been deleted!");
-    res.redirect(`/project`);
-  });
+  Project.remove(req.body.ID)
+    .then(() => {
+      req.flash("error_msg", "Project has been deleted!");
+      res.redirect(`/project`);
+    })
+    .catch((e) => {
+      req.flash("error_msg", "Error: " + e);
+      res.redirect(`/project`);
+    });
 });
 
 module.exports = router;

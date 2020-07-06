@@ -10,15 +10,4 @@ const findAll = () => {
   });
 };
 
-const findByPK = async function (id, callback) {
-  let sql = `SELECT * FROM statusproject 
-        where id=${mysql.escape(id)}`;
-
-  connection.query(sql, async function (err, result) {
-    if (err) throw err;
-    console.log(sql);
-    return callback(result[0]);
-  });
-};
-
-module.exports = { findByPK: findByPK, findAll: findAll };
+module.exports = { findAll: findAll };

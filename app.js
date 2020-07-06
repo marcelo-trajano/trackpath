@@ -7,24 +7,20 @@ const {
   allowInsecurePrototypeAccess,
 } = require("@handlebars/allow-prototype-access");
 const path = require(`path`);
+const session = require("express-session");
+const flash = require("connect-flash");
+const SERVER_PORT = process.env.PORT || 8787;
 const project = require(`./routes/project`);
 const feature = require(`./routes/feature`);
 const admin = require(`./routes/admin`);
 const bug = require(`./routes/bug`);
-const error = require(`./routes/error`);
 const api = require(`./routes/api`);
-const session = require("express-session");
-const flash = require("connect-flash");
-const Project = require(`./models/Project`);
-const FeatureStatus = require(`./models/FeatureStatus`);
-const StatusProgress = require(`./models/StatusProgress`);
-const SERVER_PORT = process.env.PORT || 8787;
 
 app.use(
-  session({ secret: "keyboardCat", resave: false, saveUninitialized: true })
+  session({ secret: "trackpath", resave: false, saveUninitialized: true })
 );
 app.use(flash());
-app.use(function (req, res, next) {
+app.use((req, res, next) => {
   console.log("ACESSANDO MIDDLEWARE...");
 
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -59,7 +55,6 @@ app.use(`/project`, project);
 app.use(`/feature`, feature);
 app.use(`/admin`, admin);
 app.use(`/bug`, bug);
-app.use(`/error`, error);
 app.use(`/api`, api);
 
 app.listen(SERVER_PORT, () => {

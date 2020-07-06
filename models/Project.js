@@ -1,28 +1,31 @@
-const mysql = require("mysql");
 const connection = require("../db/connection");
+const mysql = require("mysql");
 
-const create = async function (obj, callback) {
-  let sql = `INSERT INTO projects (NameProject,StartDate,EndDate,DescriptionProject,StatusID) 
-        VALUES ('${obj.NameProject}',STR_TO_DATE('${obj.StartDate}', '%Y-%m-%d'),STR_TO_DATE('${obj.EndDate}', '%Y-%m-%d'),'${obj.DescriptionProject}',${obj.StatusID})`;
+const create = (project) => {
+  return new Promise((resolve, reject) => {
+    let sql = `INSERT INTO projects (NameProject,StartDate,EndDate,DescriptionProject,StatusID) 
+    VALUES ('${project.NameProject}',STR_TO_DATE('${project.StartDate}', 
+    '%Y-%m-%d'),STR_TO_DATE('${project.EndDate}', '%Y-%m-%d'),
+    '${project.DescriptionProject}',${project.StatusID})`;
 
-  connection.query(sql, function (err, result) {
-    if (err) throw err;
-    console.log(sql);
-    return callback();
+    connection.query(sql, (err, result) => {
+      err ? reject(err) : resolve(result);
+    });
   });
 };
 
-const update = async function (obj, callback) {
-  let sql = `update projects
-                   set NameProject = '${obj.NameProject}' ,
-                   StartDate = STR_TO_DATE('${obj.StartDate}', '%Y-%m-%d'), 
-                   EndDate = STR_TO_DATE('${obj.EndDate}', '%Y-%m-%d') ,
-                   DescriptionProject = '${obj.DescriptionProject}', StatusID = ${obj.StatusID}
-                   where ID  = ${obj.ID}`;
-  connection.query(sql, function (err, result) {
-    if (err) throw err;
-    console.log(sql);
-    return callback();
+const update = (project) => {
+  return new Promise((resolve, reject) => {
+    let sql = `update projects
+    set NameProject = '${project.NameProject}' ,
+    StartDate = STR_TO_DATE('${project.StartDate}', '%Y-%m-%d'), 
+    EndDate = STR_TO_DATE('${project.EndDate}', '%Y-%m-%d') ,
+    DescriptionProject = '${project.DescriptionProject}', StatusID = ${project.StatusID}
+    where ID  = ${project.ID}`;
+
+    connection.query(sql, (err, result) => {
+      err ? reject(err) : resolve(result);
+    });
   });
 };
 
@@ -40,28 +43,28 @@ const findAll = () => {
   });
 };
 
-const findByPK = async function (id, callback) {
-  let sql = `select p.ID as ID, p.NameProject, DATE_FORMAT(p.StartDate,'%Y-%m-%d') as StartDate , DATE_FORMAT(p.EndDate,'%Y-%m-%d') as EndDate, p.DescriptionProject, sp.ID as StatusID, sp.StatusName 
-        from projects as p
-        inner join statusproject as sp
-        on p.StatusID = sp.ID 
-        where p.id=${mysql.escape(id)}`;
+const findByPK = (id) => {
+  return new Promise((resolve, reject) => {
+    let sql = `select p.ID as ID, p.NameProject, DATE_FORMAT(p.StartDate,'%Y-%m-%d') as StartDate , DATE_FORMAT(p.EndDate,'%Y-%m-%d') as EndDate, p.DescriptionProject, sp.ID as StatusID, sp.StatusName 
+    from projects as p
+    inner join statusproject as sp
+    on p.StatusID = sp.ID 
+    where p.id=${mysql.escape(id)}`;
 
-  connection.query(sql, async function (err, result) {
-    if (err) throw err;
-    console.log(sql);
-    return callback(result[0]);
+    connection.query(sql, (err, result) => {
+      err ? reject(err) : resolve(result[0]);
+    });
   });
 };
 
-const remove = async function (id, callback) {
-  let sql = `delete from projects 
+const remove = (id) => {
+  return new Promise((resolve, reject) => {
+    let sql = `delete from projects 
         where id=${mysql.escape(id)}`;
 
-  connection.query(sql, async function (err, result) {
-    if (err) throw err;
-    console.log(sql);
-    return callback(result[0]);
+    connection.query(sql, (err, result) => {
+      err ? reject(err) : resolve(result[0]);
+    });
   });
 };
 

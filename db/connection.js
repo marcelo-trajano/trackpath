@@ -3,7 +3,7 @@ const HOST = "localhost";
 const USER = "root";
 const PASSWORD = "123456";
 const DATABASE = "trackpath";
-const POOL_LIMIT = "trackpath";
+const POOL_LIMIT = 1;
 let cachedDbPool;
 
 // const connection = mysql.createConnection({

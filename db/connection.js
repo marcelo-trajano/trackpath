@@ -3,6 +3,7 @@ const HOST = "localhost";
 const USER = "root";
 const PASSWORD = "123456";
 const DATABASE = "trackpath";
+const POOL_LIMIT = "trackpath";
 let cachedDbPool;
 
 // const connection = mysql.createConnection({
@@ -20,7 +21,7 @@ let cachedDbPool;
 function cachedPool() {
   if (!cachedDbPool) {
     cachedDbPool = mysql.createPool({
-      connectionLimit: 1,
+      connectionLimit: POOL_LIMIT,
       host: HOST,
       user: USER,
       password: PASSWORD,

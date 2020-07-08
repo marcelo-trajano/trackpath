@@ -25,27 +25,27 @@
         <h5 class="w3-margin-bottom">Description: {{DescriptionProject}}</h5>
     </div>
     <div class="w3-bar w3-margin-bottom">
-        <a href="/feature/new/{{ID}}"> <button class="w3-button w3-grey w3-round-medium"><i class="fa fa-plus"
+        <a href="/feature/new/{{id}}"> <button class="w3-button w3-grey w3-round-medium"><i class="fa fa-plus"
                     aria-hidden="true"></i> New Feature</button></a>
-        <a href="/bug/add/{{ID}}"> <button class="w3-button w3-grey w3-round-medium"><i class="fa fa-plus"
+        <a href="/bug/add/{{id}}"> <button class="w3-button w3-grey w3-round-medium"><i class="fa fa-plus"
                     aria-hidden="true"></i>
                 Bugs</button></a>
-        <a href="/project/edit/{{ID}}"> <button class="w3-button w3-grey w3-round-medium">Edit</button></a>
-        <button onclick="document.getElementById('form_{{ID}}').style.display='block'"
+        <a href="/project/edit/{{id}}"> <button class="w3-button w3-grey w3-round-medium">Edit</button></a>
+        <button onclick="document.getElementById('form_{{id}}').style.display='block'"
             class="w3-button w3-red w3-round-medium">Delete</button>
     </div>
 </div>
-<div id="form_{{ID}}" class="modal">
-    <span onclick="document.getElementById('form_{{ID}}').style.display='none'" class="close"
+<div id="form_{{id}}" class="modal">
+    <span onclick="document.getElementById('form_{{id}}').style.display='none'" class="close"
         title="Close Modal">&times;</span>
     <form class="modal-content" action="/project/delete" method="post">
-        <input type="hidden" id="ID" name="ID" value="{{ID}}">
+        <input type="hidden" id="id" name="id" value="{{id}}">
         <div class="container1">
             <h1>Delete Project</h1>
             <p>Are you sure you want to delete this project?</p>
             <div class="clearfix">
                 <button type="button" class="cancelbtn"
-                    onclick="document.getElementById('form_{{ID}}').style.display='none'">Cancel</button>
+                    onclick="document.getElementById('form_{{id}}').style.display='none'">Cancel</button>
                 <button type="submit" class="deletebtn">Delete</button>
 
             </div>

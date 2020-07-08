@@ -1,6 +1,7 @@
 const express = require(`express`);
 const router = express.Router();
 const Project = require(`../models/Project`);
+const moment = require(`moment`);
 
 router.get(`/`, (req, res) => {
   Project.findAll()
@@ -18,6 +19,11 @@ router.get(`/new`, (req, res) => {
 
 router.post(`/new`, (req, res) => {
   let errors = [];
+  let project = req.body;
+
+  if (moment(req.body.startDate).isAfter(req.body.endDate)) {
+    errors.push({ texto: "Start Date must be less than End Date!" });
+  }
 
   if (req.body.pName === "") {
     errors.push({ texto: "Invalid input" });
@@ -28,16 +34,7 @@ router.post(`/new`, (req, res) => {
       erros: errors,
     });
   } else {
-    const project = {
-      ID: req.body.ID,
-      NameProject: req.body.pName,
-      StartDate: req.body.startDate,
-      EndDate: req.body.endDate,
-      DescriptionProject: req.body.pDescription,
-      StatusID: req.body.pPriority,
-    };
-
-    if (!project.ID || project.ID === null || project.ID === undefined) {
+    if (!project.id || project.id === null || project.id === undefined) {
       Project.create(project)
         .then(() => {
           req.flash("success_msg", "Project added successfully!");
@@ -65,12 +62,12 @@ router.get(`/edit/:id`, (req, res) => {
   Project.findByPK(req.params.id)
     .then((project) => {
       res.render("project/newProject", {
-        ID: project.ID,
-        NameProject: project.NameProject,
-        StartDate: project.StartDate,
-        EndDate: project.EndDate,
-        StatusID: project.StatusID,
-        DescriptionProject: project.DescriptionProject,
+        id: project.ID,
+        name: project.NameProject,
+        startDate: project.StartDate,
+        endDate: project.EndDate,
+        statusId: project.StatusID,
+        description: project.DescriptionProject,
       });
     })
     .catch((e) => {
@@ -80,7 +77,7 @@ router.get(`/edit/:id`, (req, res) => {
 });
 
 router.post(`/delete`, (req, res) => {
-  Project.remove(req.body.ID)
+  Project.remove(req.body.id)
     .then(() => {
       req.flash("error_msg", "Project has been deleted!");
       res.redirect(`/project`);

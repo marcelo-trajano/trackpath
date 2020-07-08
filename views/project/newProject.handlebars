@@ -15,8 +15,8 @@
                 <label for="pName">Project Name</label>
             </div>
             <div class="col-75">
-                <input type="hidden" id="ID" name="ID" value="{{ID}}">
-                <input type="text" id="pName" name="pName" value="{{NameProject}}">
+                <input type="hidden" id="id" name="id" value="{{id}}">
+                <input type="text" id="name" name="name" value="{{name}}">
             </div>
         </div>
         <div class="row">
@@ -24,7 +24,7 @@
                 <label for="startDate">Start Date</label>
             </div>
             <div class="col-75">
-                <input type="date" id="startDate" name="startDate" value="{{StartDate}}">
+                <input type="date" id="startDate" name="startDate" value="{{startDate}}">
             </div>
         </div>
         <div class="row">
@@ -32,25 +32,25 @@
                 <label for="endDate">End Date</label>
             </div>
             <div class="col-75">
-                <input type="date" id="endDate" name="endDate" value="{{EndDate}}">
+                <input type="date" id="endDate" name="endDate" value="{{endDate}}">
             </div>
         </div>
         <div class="row">
             <div class="col-25">
-                <label for="pPriority">Status</label>
+                <label for="status">Status</label>
             </div>
             <div class="col-75">
-                <input type="hidden" value="{{StatusID}}" id="status">
-                <select id="pPriority" name="pPriority"></select>
+                <input type="hidden" value="{{statusId}}" id="statusId">
+                <select id="status" name="status"></select>
             </div>
         </div>
         <div class="row">
             <div class="col-25">
-                <label for="pDescription">Description</label>
+                <label for="description">Description</label>
             </div>
             <div class="col-75">
-                <textarea id="pDescription" name="pDescription" placeholder="Write something..."
-                    style="height:200px">{{DescriptionProject}}</textarea>
+                <textarea id="description" name="description" placeholder="Write project description..."
+                    style="height:200px">{{description}}</textarea>
             </div>
         </div>
         <div class="row">
@@ -70,8 +70,8 @@
         const res = await fetch("http://localhost:8787/api/getStatusProject");
         const json = await res.json();
 
-        let pPriority = document.getElementById("pPriority");
-        let status = document.getElementById("status").value;
+        let statusSelect = document.getElementById("status");
+        let status = document.getElementById("statusId").value;
 
         for (let i = 0; i < json.length; i++) {
             let option = document.createElement("option");
@@ -80,7 +80,7 @@
             if (status == json[i].ID) {
                 option.setAttribute("selected", "");
             }
-            pPriority.appendChild(option);
+            statusSelect.appendChild(option);
         }
     }
 

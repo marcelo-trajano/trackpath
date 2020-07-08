@@ -10,6 +10,7 @@ router.get(`/`, async (req, res) => {
   let totalFeatures = 0;
   let totalIssuesSolved = 0;
   let totalBugs = 0;
+  let totalClosedBugs = 0;
 
   totalProjects = await Project.findAll();
 
@@ -23,13 +24,22 @@ router.get(`/`, async (req, res) => {
     }
   });
 
-  totalBugs = await Bug.findAll();
+  let bugs = await Bug.findAll();
+
+  bugs.forEach((bug) => {
+    if (bug.StatusID === FeatureStatus.STATUS.CLOSED) {
+      totalClosedBugs++;
+    } else {
+      totalBugs++;
+    }
+  });
 
   res.render("admin/dashboard", {
     totalProjects: totalProjects.length,
     totalFeatures: totalFeatures,
     totalIssuesSolved: totalIssuesSolved,
-    totalBugs: totalBugs.length,
+    totalBugs: totalBugs,
+    totalClosedBugs: totalClosedBugs,
   });
 });
 

@@ -6,8 +6,8 @@ const create = (bug) => {
     let sql = `INSERT INTO bugs
     (Title, Summary, EstimatedHours, DeliveryDate, CreatedAt, ProjectID, StatusID, SeverityID, PriorityID)
     VALUES
-    ("${bug.Title}", "${bug.Summary}", "${bug.EstimatedHours}", STR_TO_DATE('${bug.DeliveryDate}', '%Y-%m-%d'),
-    STR_TO_DATE('${bug.CreatedAt}', '%Y-%m-%d'), "${bug.ProjectID}", "${bug.StatusID}", "${bug.SeverityID}", "${bug.PriorityID}")`;
+    ("${bug.Title}", "${bug.Summary}", "${bug.EstimatedTime}", STR_TO_DATE('${bug.DeliveryDate}', '%Y-%m-%d'),
+    STR_TO_DATE('${bug.CreatedAt}', '%Y-%m-%d'), "${bug.projectID}", "${bug.StatusID}", "${bug.SeverityID}", "${bug.PriorityID}")`;
 
     connection.query(sql, (err, result) => {
       err ? reject() : resolve(result);

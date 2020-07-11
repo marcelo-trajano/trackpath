@@ -25,44 +25,44 @@
                 <label for="title">Title</label>
             </div>
             <div class="col-75">
-                <input type="text" id="title" name="title" value="">
+                <input type="text" id="Title" name="Title" value="">
             </div>
         </div>
 
         <div class="row">
             <div class="col-25">
-                <label for="featureStatus">Status</label>
+                <label for="StatusID">Status</label>
             </div>
             <div class="col-75">
-                <select id="featureStatus" name="featureStatus"></select>
+                <select id="StatusID" name="StatusID"></select>
             </div>
         </div>
 
         <div class="row">
             <div class="col-25">
-                <label for="estimatedTime">Estimated Time (Hours)</label>
+                <label for="EstimatedTime">Estimated Time (Hours)</label>
             </div>
             <div class="col-75">
-                <input type="text" id="estimatedTime" name="estimatedTime" value=""
+                <input type="text" id="EstimatedTime" name="EstimatedTime" value=""
                     placeholder="Estimated time in hours...">
             </div>
         </div>
 
         <div class="row">
             <div class="col-25">
-                <label for="selectSeverity">Severity</label>
+                <label for="SeverityID">Severity</label>
             </div>
             <div class="col-75">
-                <select id="selectSeverity" name="selectSeverity"></select>
+                <select id="SeverityID" name="SeverityID"></select>
             </div>
         </div>
 
         <div class="row">
             <div class="col-25">
-                <label for="selectPriority">Priority</label>
+                <label for="PriorityID">Priority</label>
             </div>
             <div class="col-75">
-                <select id="selectPriority" name="selectPriority"></select>
+                <select id="PriorityID" name="PriorityID"></select>
             </div>
         </div>
 
@@ -77,7 +77,7 @@
 
         <div class="row">
             <div class="col-25">
-                <label for="description">Summary</label>
+                <label for="Summary">Summary</label>
             </div>
             <div class="col-75">
                 <textarea id="Summary" name="Summary" placeholder="Describe issue..." style="height:200px"></textarea>
@@ -102,7 +102,7 @@
     async function getStatus() {
         const res = await fetch("http://localhost:8787/api/getFeatureStatus");
         const json = await res.json();
-        let featureStatus = document.getElementById("featureStatus");
+        let featureStatus = document.getElementById("StatusID");
         for (let i = 0; i < json.length; i++) {
             let option = document.createElement("option");
             option.value = json[i].ID;
@@ -114,7 +114,7 @@
     async function getSeverity() {
         const res = await fetch("http://localhost:8787/api/getSeverity");
         const json = await res.json();
-        let selectSeverity = document.getElementById("selectSeverity");
+        let selectSeverity = document.getElementById("SeverityID");
         for (let i = 0; i < json.length; i++) {
             let option = document.createElement("option");
             option.value = json[i].ID;
@@ -126,7 +126,7 @@
     async function getPriority() {
         const res = await fetch("http://localhost:8787/api/getPriority");
         const json = await res.json();
-        let selectPriority = document.getElementById("selectPriority");
+        let selectPriority = document.getElementById("PriorityID");
         for (let i = 0; i < json.length; i++) {
             let option = document.createElement("option");
             option.value = json[i].ID;

@@ -52,7 +52,11 @@
     $(document).ready(function () {
         $("#ProjectCombo").change(function () {
             let id = $(this).children("option:selected").val();
-            getBugsByProject(id)
+            if (id === "0") {
+                $("#containerList").empty()
+            } else {
+                getBugsByProject(id)
+            }
         });
     });
 
@@ -66,74 +70,99 @@
 
         let containerList = document.getElementById("containerList");
 
-        let i;
-        for (i = 0; i < json.length; i++) {
-
+        if (json.length === 0) {
             let divItem = document.createElement("div");
-            divItem.setAttribute("class", "solveItemDiv")
+            divItem.setAttribute("class", "solveItemDivNotFound")
             let p = document.createElement("p");
-            p.innerText = json[i].Title;
+            p.innerText = "There is no bugs for this project";
             divItem.appendChild(p)
-            let span = document.createElement("span");
+            containerList.appendChild(divItem)
+        } else {
+            loadContainerList(containerList, json)
+        }
 
-            if (json[i].StatusID === 1) {
-                span.setAttribute("class", "label-issue danger")
-                span.innerText = "Open";
-            } else if (json[i].StatusID === 2) {
-                span.setAttribute("class", "label-issue warning")
-                span.innerText = "In progress";
-            } else if (json[i].StatusID === 3) {
-                span.setAttribute("class", "label-issue success")
-                span.innerText = "To be tested";
-            } else {
-                span.setAttribute("class", "label-issue info")
-                span.innerText = "Closed";
+        function loadContainerList(containerList, json) {
+
+            for (let i = 0; i < json.length; i++) {
+
+                let divItem = document.createElement("div");
+                divItem.setAttribute("class", "solveItemDiv")
+                let p = document.createElement("p");
+                p.innerText = json[i].Title;
+                divItem.appendChild(p)
+                let span = document.createElement("span");
+
+                if (json[i].StatusID === 1) {
+                    span.setAttribute("class", "label-issue danger")
+                    span.innerText = "Open";
+                } else if (json[i].StatusID === 2) {
+                    span.setAttribute("class", "label-issue warning")
+                    span.innerText = "In progress";
+                } else if (json[i].StatusID === 3) {
+                    span.setAttribute("class", "label-issue success")
+                    span.innerText = "To be tested";
+                } else {
+                    span.setAttribute("class", "label-issue info")
+                    span.innerText = "Closed";
+                }
+
+                divItem.appendChild(span)
+
+                containerList.appendChild(divItem)
+
+                let p1 = document.createElement("p");
+                p1.innerText = "Notes: " + json[i].Summary;
+                let div = document.createElement("div");
+                div.setAttribute("class", "panel")
+
+                div.appendChild(p1)
+
+                containerList.appendChild(div)
+
+                let DivPanel = document.getElementsByClassName("panel")
+
+                let openFeatureLink = document.createElement("a");
+                openFeatureLink.setAttribute("href", `bug/solveIssue/${json[i].ID}`)
+
+                let openFeaturebutton = document.createElement("button");
+                openFeaturebutton.setAttribute("class", "w3-button w3-grey w3-round-medium w3-margin-bottom")
+                openFeaturebutton.innerText = "Solve Issue"
+                openFeatureLink.appendChild(openFeaturebutton)
+
+                DivPanel[i].appendChild(openFeatureLink)
+
+                let editBugLink = document.createElement("a");
+                editBugLink.setAttribute("href", `bug/editIssue/${json[i].ID}`)
+                let editBugbutton = document.createElement("button");
+                editBugbutton.setAttribute("class", "w3-button w3-grey w3-round-medium w3-margin-bottom w3-margin-left")
+                editBugbutton.innerText = "Edit"
+                editBugLink.appendChild(editBugbutton)
+                DivPanel[i].appendChild(editBugLink)
+
+                let deleteBugLink = document.createElement("a");
+                deleteBugLink.setAttribute("href", `bug/deleteIssue/${json[i].ID}`)
+                let deleteBugbutton = document.createElement("button");
+                deleteBugbutton.setAttribute("class", "w3-button w3-red w3-round-medium w3-margin-bottom w3-margin-left")
+                deleteBugbutton.innerText = "Delete"
+                deleteBugLink.appendChild(deleteBugbutton)
+                DivPanel[i].appendChild(deleteBugLink)
             }
 
-            divItem.appendChild(span)
+            var acc = document.getElementsByClassName("solveItemDiv");
 
-            containerList.appendChild(divItem)
-
-            let p1 = document.createElement("p");
-            p1.innerText = "Notes: " + json[i].Summary;
-            let div = document.createElement("div");
-            div.setAttribute("class", "panel")
-
-            div.appendChild(p1)
-
-            containerList.appendChild(div)
-
-            let DivPanel = document.getElementsByClassName("panel")
-
-            let openFeatureLink = document.createElement("a");
-            openFeatureLink.setAttribute("href", `bug/solveIssue/${json[i].ID}`)
-
-            let openFeaturebutton = document.createElement("button");
-            openFeaturebutton.setAttribute("class", "w3-button w3-grey w3-round-medium w3-margin-bottom")
-            openFeaturebutton.innerText = "Solve Issue"
-            openFeatureLink.appendChild(openFeaturebutton)
-
-            DivPanel[i].appendChild(openFeatureLink)
-
-
-
+            for (let j = 0; j < acc.length; j++) {
+                acc[j].addEventListener("click", function () {
+                    this.classList.toggle("active");
+                    var panel = this.nextElementSibling;
+                    if (panel.style.maxHeight) {
+                        panel.style.maxHeight = null;
+                    } else {
+                        panel.style.maxHeight = panel.scrollHeight + "px";
+                    }
+                });
+            }
         }
 
-
-        var acc = document.getElementsByClassName("solveItemDiv");
-
-        var j;
-        for (j = 0; j < acc.length; j++) {
-            acc[j].addEventListener("click", function () {
-                this.classList.toggle("active");
-                var panel = this.nextElementSibling;
-                if (panel.style.maxHeight) {
-                    panel.style.maxHeight = null;
-                } else {
-                    panel.style.maxHeight = panel.scrollHeight + "px";
-                }
-            });
-        }
     }
 
 

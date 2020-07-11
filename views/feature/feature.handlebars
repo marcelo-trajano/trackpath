@@ -52,7 +52,11 @@
     $(document).ready(function () {
         $("#ProjectCombo").change(function () {
             let id = $(this).children("option:selected").val();
-            getFeaturesByProject(id)
+            if (id === "0") {
+                $("#containerList").empty()
+            } else {
+                getFeaturesByProject(id)
+            }
         });
     });
 
@@ -66,73 +70,98 @@
 
         let containerList = document.getElementById("containerList");
 
-        let i;
-        for (i = 0; i < json.length; i++) {
-
+        if (json.length === 0) {
             let divItem = document.createElement("div");
-            divItem.setAttribute("class", "solveItemDiv")
+            divItem.setAttribute("class", "solveItemDivNotFound")
             let p = document.createElement("p");
-            p.innerText = json[i].TitleFeature;
+            p.innerText = "There is no features for this project";
             divItem.appendChild(p)
-            let span = document.createElement("span");
-
-            if (json[i].FeatureStatusID === 1) {
-                span.setAttribute("class", "label-issue danger")
-                span.innerText = "Open";
-            } else if (json[i].FeatureStatusID === 2) {
-                span.setAttribute("class", "label-issue warning")
-                span.innerText = "In progress";
-            } else if (json[i].FeatureStatusID === 3) {
-                span.setAttribute("class", "label-issue success")
-                span.innerText = "To be tested";
-            } else {
-                span.setAttribute("class", "label-issue info")
-                span.innerText = "Closed";
-            }
-
-            divItem.appendChild(span)
-
             containerList.appendChild(divItem)
-
-            let p1 = document.createElement("p");
-            p1.innerText = "Notes: " + json[i].DescriptionFeature;
-            let div = document.createElement("div");
-            div.setAttribute("class", "panel")
-
-            div.appendChild(p1)
-
-            containerList.appendChild(div)
-
-            let DivPanel = document.getElementsByClassName("panel")
-
-            let openFeatureLink = document.createElement("a");
-            openFeatureLink.setAttribute("href", `feature/solveIssue/${json[i].ID}`)
-
-            let openFeaturebutton = document.createElement("button");
-            openFeaturebutton.setAttribute("class", "w3-button w3-grey w3-round-medium w3-margin-bottom")
-            openFeaturebutton.innerText = "Solve Issue"
-            openFeatureLink.appendChild(openFeaturebutton)
-
-            DivPanel[i].appendChild(openFeatureLink)
-
-
-
+        } else {
+            loadContainerList(containerList, json)
         }
 
+        function loadContainerList(containerList, json) {
 
-        var acc = document.getElementsByClassName("solveItemDiv");
+            for (let i = 0; i < json.length; i++) {
 
-        var j;
-        for (j = 0; j < acc.length; j++) {
-            acc[j].addEventListener("click", function () {
-                this.classList.toggle("active");
-                var panel = this.nextElementSibling;
-                if (panel.style.maxHeight) {
-                    panel.style.maxHeight = null;
+                let divItem = document.createElement("div");
+                divItem.setAttribute("class", "solveItemDiv")
+                let p = document.createElement("p");
+                p.innerText = json[i].TitleFeature;
+                divItem.appendChild(p)
+                let span = document.createElement("span");
+
+                if (json[i].FeatureStatusID === 1) {
+                    span.setAttribute("class", "label-issue danger")
+                    span.innerText = "Open";
+                } else if (json[i].FeatureStatusID === 2) {
+                    span.setAttribute("class", "label-issue warning")
+                    span.innerText = "In progress";
+                } else if (json[i].FeatureStatusID === 3) {
+                    span.setAttribute("class", "label-issue success")
+                    span.innerText = "To be tested";
                 } else {
-                    panel.style.maxHeight = panel.scrollHeight + "px";
+                    span.setAttribute("class", "label-issue info")
+                    span.innerText = "Closed";
                 }
-            });
+
+                divItem.appendChild(span)
+
+                containerList.appendChild(divItem)
+
+                let p1 = document.createElement("p");
+                p1.innerText = "Notes: " + json[i].DescriptionFeature;
+                let div = document.createElement("div");
+                div.setAttribute("class", "panel")
+
+                div.appendChild(p1)
+
+                containerList.appendChild(div)
+
+                let DivPanel = document.getElementsByClassName("panel")
+
+                let openFeatureLink = document.createElement("a");
+                openFeatureLink.setAttribute("href", `feature/solveIssue/${json[i].ID}`)
+                let openFeaturebutton = document.createElement("button");
+                openFeaturebutton.setAttribute("class", "w3-button w3-grey w3-round-medium w3-margin-bottom")
+                openFeaturebutton.innerText = "Start Feature"
+                openFeatureLink.appendChild(openFeaturebutton)
+                DivPanel[i].appendChild(openFeatureLink)
+
+
+                let editFeatureLink = document.createElement("a");
+                editFeatureLink.setAttribute("href", `feature/editIssue/${json[i].ID}`)
+                let editFeaturebutton = document.createElement("button");
+                editFeaturebutton.setAttribute("class", "w3-button w3-grey w3-round-medium w3-margin-bottom w3-margin-left")
+                editFeaturebutton.innerText = "Edit"
+                editFeatureLink.appendChild(editFeaturebutton)
+                DivPanel[i].appendChild(editFeatureLink)
+
+                let deleteFeatureLink = document.createElement("a");
+                deleteFeatureLink.setAttribute("href", `feature/deleteIssue/${json[i].ID}`)
+                let deleteFeaturebutton = document.createElement("button");
+                deleteFeaturebutton.setAttribute("class", "w3-button w3-red w3-round-medium w3-margin-bottom w3-margin-left")
+                deleteFeaturebutton.innerText = "Delete"
+                deleteFeatureLink.appendChild(deleteFeaturebutton)
+                DivPanel[i].appendChild(deleteFeatureLink)
+
+
+            }
+
+            var acc = document.getElementsByClassName("solveItemDiv");
+
+            for (let j = 0; j < acc.length; j++) {
+                acc[j].addEventListener("click", function () {
+                    this.classList.toggle("active");
+                    var panel = this.nextElementSibling;
+                    if (panel.style.maxHeight) {
+                        panel.style.maxHeight = null;
+                    } else {
+                        panel.style.maxHeight = panel.scrollHeight + "px";
+                    }
+                });
+            }
         }
     }
 

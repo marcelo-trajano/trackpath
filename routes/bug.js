@@ -20,17 +20,8 @@ router.get(`/add/:projectID`, (req, res) => {
 });
 
 router.post(`/add`, (req, res) => {
-  const bug = {
-    Title: req.body.title,
-    Summary: req.body.Summary,
-    EstimatedHours: req.body.estimatedTime,
-    DeliveryDate: req.body.DeliveryDate,
-    CreatedAt: moment().format("YYYY-MM-DD"),
-    ProjectID: req.body.projectID,
-    StatusID: req.body.featureStatus,
-    SeverityID: req.body.selectSeverity,
-    PriorityID: req.body.selectPriority,
-  };
+  const bug = req.body;
+  bug.CreatedAt = moment().format("YYYY-MM-DD");
 
   Bug.create(bug)
     .then(() => {
@@ -63,7 +54,7 @@ router.get(`/solveIssue/:bugID`, (req, res) => {
 });
 
 router.post(`/solveIssue`, (req, res) => {
-  let bug = req.body;
+  const bug = req.body;
 
   Bug.updateSolveIssue(bug)
     .then(() => {

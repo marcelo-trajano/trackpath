@@ -1,0 +1,26 @@
+<div class="login">
+    <form action="/login" method="post">
+        <div class="imgcontainer">
+            <img src="/img/login.png" alt="Avatar" class="avatar" />
+        </div>
+
+        <div class="login-form-container">
+            <label for="email"><b>Username</b></label>
+            <input type="email" placeholder="Enter Username" name="email" required />
+
+            <label for="password"><b>Password</b></label>
+            <input type="password" placeholder="Enter Password" name="password" required />
+
+            <button type="submit" class="login-button">Login</button>
+            <label>
+                <input type="checkbox" checked="checked" name="remember" /> Remember
+                me
+            </label>
+        </div>
+
+        <div class="login-form-container" style="background-color: #f1f1f1;">
+            <button type="button" class="login-button signup">Sign up</button>
+            <span class="psw">Forgot <a href="#">password?</a></span>
+        </div>
+    </form>
+</div>

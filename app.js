@@ -7,6 +7,8 @@ const {
   allowInsecurePrototypeAccess,
 } = require("@handlebars/allow-prototype-access");
 const path = require(`path`);
+const passport = require(`passport`);
+require(`./config/auth`)(passport);
 const session = require("express-session");
 const flash = require("connect-flash");
 const SERVER_PORT = process.env.PORT || 8787;
@@ -15,10 +17,13 @@ const feature = require(`./routes/feature`);
 const admin = require(`./routes/admin`);
 const bug = require(`./routes/bug`);
 const api = require(`./routes/api`);
+const login = require(`./routes/login`);
 
 app.use(
   session({ secret: "trackpath", resave: false, saveUninitialized: true })
 );
+app.use(passport.initialize());
+app.use(passport.session());
 app.use(flash());
 app.use((req, res, next) => {
   console.log("ACESSANDO MIDDLEWARE...");
@@ -36,6 +41,7 @@ app.use((req, res, next) => {
 
   res.locals.success_msg = req.flash("success_msg");
   res.locals.error_msg = req.flash("error_msg");
+  res.locals.error = req.flash("error");
 
   next();
 });
@@ -56,6 +62,11 @@ app.use(`/feature`, feature);
 app.use(`/admin`, admin);
 app.use(`/bug`, bug);
 app.use(`/api`, api);
+app.use(`/login`, login);
+
+app.get("/", (req, res) => {
+  res.redirect("/login");
+});
 
 app.listen(SERVER_PORT, () => {
   console.log("Server listening on port " + SERVER_PORT);

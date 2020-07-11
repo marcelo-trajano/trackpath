@@ -1,13 +1,53 @@
 <div class="w3-dark-grey nav-bar-menu">
     <div>
+        {{#if user}}
         <button id="openNav" class="w3-button w3-dark-grey w3-xlarge" onclick="w3_open()">&#9776;</button>
+        {{/if}}
         <div class="w3-container">
             <h1 class="w3-margin-bottom"><i class="fa fa-bar-chart" aria-hidden="true"></i> TrackPath</h1>
         </div>
     </div>
     <div>
+        {{#if user}}
+        <a class="login-access">
+            <h4>User: </h4> <span onclick="openLoginMenu()" class="dropbtn">{{user.name}}</span>
+            <div class="dropdown">
+                <div id="myDropdown" class="dropdown-content">
+                    <a href="/settings">settings</a>
+                    <a href="/logout">logout</a>
+                </div>
+            </div>
+        </a>
+        {{else}}
         <a href="/login" class="login-access">
             <h4>Login</h4><i class="fa fa-sign-in" aria-hidden="true"> </i>
         </a>
+        {{/if}}
     </div>
 </div>
+
+<script>
+
+    /* When the user clicks on the button, 
+    toggle between hiding and showing the dropdown content */
+    function openLoginMenu() {
+        document.getElementById("myDropdown").classList.toggle("show");
+    }
+
+    // Close the dropdown if the user clicks outside of it
+    window.onclick = function (event) {
+        if (!event.target.matches('.dropbtn')) {
+            var dropdowns = document.getElementsByClassName("dropdown-content");
+            var i;
+            for (i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+        }
+    }
+
+
+
+</script>

@@ -4,8 +4,9 @@ const Project = require(`../models/Project`);
 const Feature = require(`../models/Feature`);
 const FeatureStatus = require(`../models/FeatureStatus`);
 const Bug = require(`../models/Bug`);
+const { isAuthenticated, isAdmin } = require(`../helpers/permissions`);
 
-router.get(`/`, async (req, res) => {
+router.get(`/`, isAdmin, async (req, res) => {
   let totalProjects = 0;
   let totalFeatures = 0;
   let totalIssuesSolved = 0;

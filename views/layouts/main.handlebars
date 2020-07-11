@@ -11,11 +11,13 @@
 <link rel="stylesheet" href="/css/style.css">
 
 <body>
-
+    {{#if user}}
     <div class="w3-sidebar w3-bar-block w3-card" style="display:none" id="mySidebar">
         <button class="w3-bar-item w3-button w3-large" onclick="w3_close()">Close &times;</button>
+        {{#if user.isAdmin}}
         <a href="/admin" class="w3-bar-item w3-button"><i class="fa fa-tachometer" aria-hidden="true"></i> Dashboard</a>
         <a href="/project" class="w3-bar-item w3-button"><i class="fa fa-terminal" aria-hidden="true"></i> Projects</a>
+        {{/if}}
         <a href="/feature" class="w3-bar-item w3-button"><i class="fa fa-plus-square" aria-hidden="true"></i> New
             Features</a>
         <a href="/bug" class="w3-bar-item w3-button"><i class="fa fa-bug" aria-hidden="true"></i> Bugs</a>
@@ -25,6 +27,7 @@
         <a href="#" class="w3-bar-item w3-button"><i class="fa fa-rss" aria-hidden="true"></i> Feed</a>
         <a href="/logout" class="w3-bar-item w3-button"><i class="fa fa-sign-out" aria-hidden="true"></i> Log out</a>
     </div>
+    {{/if}}
 
     <div id="main">
         {{>_navbar}}

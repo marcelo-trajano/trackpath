@@ -4,12 +4,13 @@ const Project = require(`../models/Project`);
 const Feature = require(`../models/Feature`);
 const StatusProgress = require(`../models/StatusProgress`);
 const moment = require("moment");
+const { isAuthenticated, isAdmin } = require(`../helpers/permissions`);
 
-router.get(`/`, (req, res) => {
+router.get(`/`, isAuthenticated, (req, res) => {
   res.render("feature/feature");
 });
 
-router.get(`/getFeaturesByProject/:id`, (req, res) => {
+router.get(`/getFeaturesByProject/:id`, isAuthenticated, (req, res) => {
   Feature.findFeaturesByProjects(req.params.id)
     .then((features) => {
       res.send(features);
@@ -20,7 +21,7 @@ router.get(`/getFeaturesByProject/:id`, (req, res) => {
     });
 });
 
-router.get(`/new/:id`, (req, res) => {
+router.get(`/new/:id`, isAuthenticated, (req, res) => {
   Project.findByPK(req.params.id)
     .then((project) => {
       res.render("feature/newFeature", { project: project });
@@ -31,7 +32,7 @@ router.get(`/new/:id`, (req, res) => {
     });
 });
 
-router.post(`/new`, (req, res) => {
+router.post(`/new`, isAuthenticated, (req, res) => {
   const feature = {
     ID: req.body.id,
     TitleFeature: req.body.titleFeature,
@@ -55,7 +56,7 @@ router.post(`/new`, (req, res) => {
     });
 });
 
-router.get(`/solveIssue/:id`, (req, res) => {
+router.get(`/solveIssue/:id`, isAuthenticated, (req, res) => {
   Feature.findByPK(req.params.id)
     .then((feature) => {
       Project.findByPK(feature.ProjectID)
@@ -74,7 +75,7 @@ router.get(`/solveIssue/:id`, (req, res) => {
     });
 });
 
-router.post(`/solveIssue`, (req, res) => {
+router.post(`/solveIssue`, isAuthenticated, (req, res) => {
   const feature = {
     ID: req.body.featureID,
     DescriptionFeature: req.body.description,

@@ -3,12 +3,13 @@ const router = express.Router();
 const Bug = require(`../models/Bug`);
 const Project = require(`../models/Project`);
 const moment = require("moment");
+const { isAuthenticated, isAdmin } = require(`../helpers/permissions`);
 
-router.get(`/`, (req, res) => {
+router.get(`/`, isAuthenticated, (req, res) => {
   res.render(`bug/bugs`);
 });
 
-router.get(`/add/:projectID`, (req, res) => {
+router.get(`/add/:projectID`, isAuthenticated, (req, res) => {
   Project.findByPK(req.params.projectID)
     .then((bug) => {
       res.render(`bug/addBug`, { project: bug });
@@ -19,7 +20,7 @@ router.get(`/add/:projectID`, (req, res) => {
     });
 });
 
-router.post(`/add`, (req, res) => {
+router.post(`/add`, isAuthenticated, (req, res) => {
   const bug = req.body;
   bug.CreatedAt = moment().format("YYYY-MM-DD");
 
@@ -34,7 +35,7 @@ router.post(`/add`, (req, res) => {
     });
 });
 
-router.get(`/solveIssue/:bugID`, (req, res) => {
+router.get(`/solveIssue/:bugID`, isAuthenticated, (req, res) => {
   Bug.findByPK(req.params.bugID)
     .then((bug) => {
       Project.findByPK(bug.ProjectID)
@@ -53,7 +54,7 @@ router.get(`/solveIssue/:bugID`, (req, res) => {
     });
 });
 
-router.post(`/solveIssue`, (req, res) => {
+router.post(`/solveIssue`, isAuthenticated, (req, res) => {
   const bug = req.body;
 
   Bug.updateSolveIssue(bug)

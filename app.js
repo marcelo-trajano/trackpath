@@ -17,7 +17,6 @@ const feature = require(`./routes/feature`);
 const admin = require(`./routes/admin`);
 const bug = require(`./routes/bug`);
 const api = require(`./routes/api`);
-const login = require(`./routes/login`);
 
 app.use(
   session({ secret: "trackpath", resave: false, saveUninitialized: true })
@@ -42,6 +41,9 @@ app.use((req, res, next) => {
   res.locals.success_msg = req.flash("success_msg");
   res.locals.error_msg = req.flash("error_msg");
   res.locals.error = req.flash("error");
+  res.locals.user = req.user || null;
+
+  console.log(req.user);
 
   next();
 });
@@ -62,10 +64,34 @@ app.use(`/feature`, feature);
 app.use(`/admin`, admin);
 app.use(`/bug`, bug);
 app.use(`/api`, api);
-app.use(`/login`, login);
 
-app.get("/", (req, res) => {
-  res.redirect("/login");
+app.get(`/`, (req, res) => {
+  if (req.isAuthenticated()) {
+    res.render(`feature/feature`);
+  } else {
+    res.render(`login/login`);
+  }
+});
+
+app.get(`/login`, (req, res) => {
+  if (req.isAuthenticated()) {
+    res.render(`feature/feature`);
+  } else {
+    res.render(`login/login`);
+  }
+});
+
+app.post(`/login`, (req, res, next) => {
+  passport.authenticate("local", {
+    successRedirect: "/feature",
+    failureRedirect: "/login",
+    failureFlash: true,
+  })(req, res, next);
+});
+
+app.get(`/logout`, (req, res) => {
+  req.logOut();
+  res.redirect(`/login`);
 });
 
 app.listen(SERVER_PORT, () => {

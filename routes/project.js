@@ -2,8 +2,9 @@ const express = require(`express`);
 const router = express.Router();
 const Project = require(`../models/Project`);
 const moment = require(`moment`);
+const { isAdmin } = require(`../helpers/permissions`);
 
-router.get(`/`, (req, res) => {
+router.get(`/`, isAdmin, (req, res) => {
   Project.findAll()
     .then((projects) => {
       res.render("project/project", { Projects: projects });
@@ -13,11 +14,11 @@ router.get(`/`, (req, res) => {
     });
 });
 
-router.get(`/new`, (req, res) => {
+router.get(`/new`, isAdmin, (req, res) => {
   res.render("project/newProject");
 });
 
-router.post(`/new`, (req, res) => {
+router.post(`/new`, isAdmin, (req, res) => {
   let errors = [];
   let project = req.body;
 
@@ -58,7 +59,7 @@ router.post(`/new`, (req, res) => {
   }
 });
 
-router.get(`/edit/:id`, (req, res) => {
+router.get(`/edit/:id`, isAdmin, (req, res) => {
   Project.findByPK(req.params.id)
     .then((project) => {
       res.render("project/newProject", {
@@ -76,7 +77,7 @@ router.get(`/edit/:id`, (req, res) => {
     });
 });
 
-router.post(`/delete`, (req, res) => {
+router.post(`/delete`, isAdmin, (req, res) => {
   Project.remove(req.body.id)
     .then(() => {
       req.flash("error_msg", "Project has been deleted!");

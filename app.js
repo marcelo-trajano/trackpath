@@ -17,6 +17,7 @@ const feature = require(`./routes/feature`);
 const admin = require(`./routes/admin`);
 const bug = require(`./routes/bug`);
 const api = require(`./routes/api`);
+const account = require(`./routes/account`);
 
 app.use(
   session({ secret: "trackpath", resave: false, saveUninitialized: true })
@@ -64,6 +65,7 @@ app.use(`/feature`, feature);
 app.use(`/admin`, admin);
 app.use(`/bug`, bug);
 app.use(`/api`, api);
+app.use(`/account`, account);
 
 app.get(`/`, (req, res) => {
   if (req.isAuthenticated()) {

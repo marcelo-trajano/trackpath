@@ -71,6 +71,34 @@ router.get(`/getPriority`, (req, res) => {
 router.get(`/getBugsByProject/:id`, (req, res) => {
   Bug.getBugsByProject(req.params.id)
     .then((results) => {
+      let listInProgress = [];
+      let listInTest = [];
+      let listOpen = [];
+      let listClosed = [];
+
+      results.forEach((bug) => {
+        if (bug.StatusID === 2) {
+          listInProgress.push(bug);
+        }
+        if (bug.StatusID === 3) {
+          listInTest.push(bug);
+        }
+        if (bug.StatusID === 1) {
+          listOpen.push(bug);
+        }
+        if (bug.StatusID === 4) {
+          listClosed.push(bug);
+        }
+      });
+
+      results = [];
+
+      results = results
+        .concat(listInProgress)
+        .concat(listInTest)
+        .concat(listOpen)
+        .concat(listClosed);
+
       res.send(results);
     })
     .catch((err) => {

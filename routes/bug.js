@@ -57,6 +57,13 @@ router.get(`/solveIssue/:bugID`, isAuthenticated, (req, res) => {
 router.post(`/solveIssue`, isAuthenticated, (req, res) => {
   const bug = req.body;
 
+  bug.Summary =
+    bug.Summary +
+    "\n updated by: " +
+    req.user.name +
+    " on " +
+    moment().format("YYYY-MM-DD HH:mm");
+
   Bug.updateSolveIssue(bug)
     .then(() => {
       req.flash("success_msg", "Issue successfully updated!");

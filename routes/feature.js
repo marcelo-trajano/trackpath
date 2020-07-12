@@ -3,6 +3,7 @@ const router = express.Router();
 const Project = require(`../models/Project`);
 const Feature = require(`../models/Feature`);
 const StatusProgress = require(`../models/StatusProgress`);
+const FeatureStatus = require(`../models/FeatureStatus`);
 const moment = require("moment");
 const { isAuthenticated, isAdmin } = require(`../helpers/permissions`);
 
@@ -13,6 +14,34 @@ router.get(`/`, isAuthenticated, (req, res) => {
 router.get(`/getFeaturesByProject/:id`, isAuthenticated, (req, res) => {
   Feature.findFeaturesByProjects(req.params.id)
     .then((features) => {
+      let listInProgress = [];
+      let listInTest = [];
+      let listOpen = [];
+      let listClosed = [];
+
+      features.forEach((feature) => {
+        if (feature.FeatureStatusID === 2) {
+          listInProgress.push(feature);
+        }
+        if (feature.FeatureStatusID === 3) {
+          listInTest.push(feature);
+        }
+        if (feature.FeatureStatusID === 1) {
+          listOpen.push(feature);
+        }
+        if (feature.FeatureStatusID === 4) {
+          listClosed.push(feature);
+        }
+      });
+
+      features = [];
+
+      features = features
+        .concat(listInProgress)
+        .concat(listInTest)
+        .concat(listOpen)
+        .concat(listClosed);
+
       res.send(features);
     })
     .catch((e) => {
@@ -82,6 +111,13 @@ router.post(`/solveIssue`, isAuthenticated, (req, res) => {
     FeatureStatusID: req.body.featureStatus,
     StatusProgressID: req.body.Progress,
   };
+
+  feature.DescriptionFeature =
+    feature.DescriptionFeature +
+    "\n updated by: " +
+    req.user.name +
+    " on " +
+    moment().format("YYYY-MM-DD HH:mm");
 
   Feature.updateSolveIssue(feature)
     .then(() => {

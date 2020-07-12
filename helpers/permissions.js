@@ -11,7 +11,6 @@ module.exports = {
       return next();
     }
     req.flash("error_msg", "User not authorized!");
-    //res.redirect("/notauthorized");
-    res.redirect("/notauthorized");
+    res.redirect("/feature");
   },
 };

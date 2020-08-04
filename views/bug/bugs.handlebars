@@ -140,7 +140,7 @@
                 DivPanel[i].appendChild(editBugLink)
 
                 let deleteBugLink = document.createElement("a");
-                deleteBugLink.setAttribute("href", `bug/deleteIssue/${json[i].ID}`)
+                deleteBugLink.setAttribute("href", `bug/delete/${json[i].ID}`)
                 let deleteBugbutton = document.createElement("button");
                 deleteBugbutton.setAttribute("class", "w3-button w3-red w3-round-medium w3-margin-bottom w3-margin-left")
                 deleteBugbutton.innerText = "Delete"

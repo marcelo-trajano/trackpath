@@ -6,9 +6,9 @@ const create = (feature) => {
     let sql = `insert into Features (TitleFeature, DescriptionFeature, EstimatedTime, DeliveryDate, 
       CreatedAt, ProjectID, FeatureStatusID, StatusProgressID) 
       values 
-      ("${feature.TitleFeature}", "${feature.DescriptionFeature}", ${feature.EstimatedTime}, 
-      STR_TO_DATE('${feature.DeliveryDate}', '%Y-%m-%d'), STR_TO_DATE('${feature.CreatedAt}', '%Y-%m-%d'),
-      ${feature.ProjectID},${feature.FeatureStatusID},${feature.StatusProgressID})`;
+      ("${feature.titleFeature}", "${feature.description}", ${feature.estimatedTime}, 
+      STR_TO_DATE('${feature.deliveryDate}', '%Y-%m-%d'), STR_TO_DATE('${feature.CreatedAt}', '%Y-%m-%d'),
+      ${feature.projectID},${feature.featureStatus},${feature.StatusProgressID})`;
 
     connection.query(sql, (err, result) => {
       err ? reject(err) : resolve(result);
@@ -84,10 +84,21 @@ const updateSolveIssue = (feature) => {
   });
 };
 
+const remove = (id) => {
+  return new Promise((resolve, reject) => {
+    let sql = `delete from features where ID = ${mysql.escape(id)}`;
+
+    connection.query(sql, (err, data) => {
+      err ? reject(err) : resolve(data);
+    });
+  });
+};
+
 module.exports = {
   create: create,
   findFeaturesByProjects: findFeaturesByProjects,
   findByPK: findByPK,
   updateSolveIssue: updateSolveIssue,
   findAll: findAll,
+  remove: remove,
 };

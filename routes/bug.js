@@ -75,4 +75,16 @@ router.post(`/solveIssue`, isAuthenticated, (req, res) => {
     });
 });
 
+router.get(`/delete/:id`, isAdmin, (req, res) => {
+  Bug.remove(req.params.id)
+    .then(() => {
+      req.flash("error_msg", "Issue deleted successfully!");
+      res.redirect(`/bug`);
+    })
+    .catch((e) => {
+      req.flash("error_msg", "Error: " + e);
+      res.redirect(`/bug`);
+    });
+});
+
 module.exports = router;

@@ -8,7 +8,7 @@
 
 
 <div class="container">
-    <form action="/feature/new" method="post">
+    <form action="/feature/new" method="post" encType="multipart/form-data">
 
         <div class="row">
             <div class="col-25">
@@ -59,6 +59,17 @@
 
         <div class="row">
             <div class="col-25">
+                <label for="attachment">Attachments</label>
+            </div>
+            <div class="col-75">
+                <input name="attachment" id="file" type="file" hidden="hidden" />
+                <button type="button" id="upload-file-button" class="file-upload">CHOOSE A FILE</button>
+                <span id="file-upload-text" class="file-upload-custom-text">No files attached.</span>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-25">
                 <label for="description">Notes</label>
             </div>
             <div class="col-75">
@@ -77,10 +88,10 @@
 <script>
 
     $(document).ready(function () {
-        fetchAsyncAwait();
+        getfeatureStatus();
     });
 
-    async function fetchAsyncAwait() {
+    async function getfeatureStatus() {
         const res = await fetch("http://localhost:8787/api/getfeatureStatus");
         const json = await res.json();
 
@@ -93,6 +104,26 @@
             featureStatus.appendChild(option);
         }
     }
+
+    const realFileBtn = document.getElementById("file");
+    const customBtn = document.getElementById("upload-file-button");
+    const customTxt = document.getElementById("file-upload-text");
+
+    customBtn.addEventListener("click", function () {
+        realFileBtn.click();
+    });
+
+    realFileBtn.addEventListener("change", function () {
+        if (realFileBtn.value) {
+            customTxt.innerHTML = realFileBtn.value.match(
+                /[\/\\]([\w\d\s\.\-\(\)]+)$/
+            )[1];
+        } else {
+            customTxt.innerHTML = "No files attached.";
+        }
+    });
+
+
 
 
 </script>

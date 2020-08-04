@@ -61,10 +61,21 @@ const getBugsByProject = (id) => {
   });
 };
 
+const remove = (id) => {
+  return new Promise((resolve, reject) => {
+    let sql = `delete from bugs where ID = ${mysql.escape(id)}`;
+
+    connection.query(sql, (err, data) => {
+      err ? reject(err) : resolve(data);
+    });
+  });
+};
+
 module.exports = {
   create: create,
   findAll: findAll,
   getBugsByProject: getBugsByProject,
   findByPK: findByPK,
   updateSolveIssue: updateSolveIssue,
+  remove: remove,
 };

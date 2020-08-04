@@ -125,7 +125,7 @@
                 openFeatureLink.setAttribute("href", `feature/solveIssue/${json[i].ID}`)
                 let openFeaturebutton = document.createElement("button");
                 openFeaturebutton.setAttribute("class", "w3-button w3-grey w3-round-medium w3-margin-bottom")
-                openFeaturebutton.innerText = "Start Feature"
+                openFeaturebutton.innerText = "Update Status"
                 openFeatureLink.appendChild(openFeaturebutton)
                 DivPanel[i].appendChild(openFeatureLink)
 
@@ -139,7 +139,7 @@
                 DivPanel[i].appendChild(editFeatureLink)
 
                 let deleteFeatureLink = document.createElement("a");
-                deleteFeatureLink.setAttribute("href", `feature/deleteIssue/${json[i].ID}`)
+                deleteFeatureLink.setAttribute("href", `feature/delete/${json[i].ID}`)
                 let deleteFeaturebutton = document.createElement("button");
                 deleteFeaturebutton.setAttribute("class", "w3-button w3-red w3-round-medium w3-margin-bottom w3-margin-left")
                 deleteFeaturebutton.innerText = "Delete"

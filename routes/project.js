@@ -22,7 +22,7 @@ router.post(`/new`, isAdmin, (req, res) => {
   let errors = [];
   let project = req.body;
 
-  if (moment(req.body.startDate).isAfter(req.body.endDate)) {
+  if (moment(project.startDate).isAfter(project.endDate)) {
     errors.push({ texto: "Start Date must be less than End Date!" });
   }
 

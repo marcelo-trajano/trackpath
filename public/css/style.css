@@ -32,6 +32,7 @@ h5 {
 
 input[type="text"],
 input[type="date"],
+input[type="file"],
 select,
 textarea {
   width: 100%;
@@ -439,4 +440,23 @@ span.psw {
 
 .show {
   display: block;
+}
+
+.file-upload {
+  padding: 10px;
+  color: white;
+  background-color: #009578;
+  border: 1px solid white;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.file-upload:hover {
+  background-color: #00b28f;
+}
+
+.file-upload-custom-text {
+  margin-left: 10px;
+  font-family: "Raleway";
+  color: rgb(124, 122, 122);
 }

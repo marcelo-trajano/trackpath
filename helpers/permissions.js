@@ -1,6 +1,5 @@
 module.exports = {
   isAuthenticated: (req, res, next) => {
-    return next();
     if (req.isAuthenticated()) {
       return next();
     }
@@ -8,7 +7,6 @@ module.exports = {
     res.redirect("/login");
   },
   isAdmin: (req, res, next) => {
-    return next();
     if (req.isAuthenticated() && req.user.isAdmin === 1) {
       return next();
     }
